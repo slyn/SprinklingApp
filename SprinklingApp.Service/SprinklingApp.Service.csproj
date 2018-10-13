@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\SprinklingApp.DataAccess\SprinklingApp.DataAccess.csproj" />
+    <ProjectReference Include="..\SprinklingApp.Model\SprinklingApp.Model.csproj" />
+  </ItemGroup>
+
+</Project>

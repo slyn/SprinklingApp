@@ -3,7 +3,43 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28010.2041
 MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SprinklingApp.Model", "SprinklingApp.Model\SprinklingApp.Model.csproj", "{5C1DF3DB-341B-4094-9003-F99A997CE59C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SprinklingApp.DataAccess", "SprinklingApp.DataAccess\SprinklingApp.DataAccess.csproj", "{39B8CF02-029C-4D39-8BBF-F8AC8ADFB890}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SprinklingApp.Common", "SprinklingApp.Common\SprinklingApp.Common.csproj", "{39443E97-1722-443E-A9F5-4A585CA13263}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SprinklingApp.Service", "SprinklingApp.Service\SprinklingApp.Service.csproj", "{B4AAADF3-6401-479F-9461-79429E3611D8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SprinklingApp.Master.API", "SprinklingApp.Master.API\SprinklingApp.Master.API.csproj", "{2388E5D8-A5CE-4F8F-9EBF-A324DE515D48}"
+EndProject
 Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{5C1DF3DB-341B-4094-9003-F99A997CE59C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5C1DF3DB-341B-4094-9003-F99A997CE59C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5C1DF3DB-341B-4094-9003-F99A997CE59C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5C1DF3DB-341B-4094-9003-F99A997CE59C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{39B8CF02-029C-4D39-8BBF-F8AC8ADFB890}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{39B8CF02-029C-4D39-8BBF-F8AC8ADFB890}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{39B8CF02-029C-4D39-8BBF-F8AC8ADFB890}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{39B8CF02-029C-4D39-8BBF-F8AC8ADFB890}.Release|Any CPU.Build.0 = Release|Any CPU
+		{39443E97-1722-443E-A9F5-4A585CA13263}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{39443E97-1722-443E-A9F5-4A585CA13263}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{39443E97-1722-443E-A9F5-4A585CA13263}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{39443E97-1722-443E-A9F5-4A585CA13263}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B4AAADF3-6401-479F-9461-79429E3611D8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B4AAADF3-6401-479F-9461-79429E3611D8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B4AAADF3-6401-479F-9461-79429E3611D8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B4AAADF3-6401-479F-9461-79429E3611D8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2388E5D8-A5CE-4F8F-9EBF-A324DE515D48}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2388E5D8-A5CE-4F8F-9EBF-A324DE515D48}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2388E5D8-A5CE-4F8F-9EBF-A324DE515D48}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2388E5D8-A5CE-4F8F-9EBF-A324DE515D48}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
