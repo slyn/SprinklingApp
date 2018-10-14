@@ -1,15 +1,14 @@
-﻿using SprinklingApp.Model.Entities.Abstract;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using SprinklingApp.Model.DTOs.Abstract;
+using SprinklingApp.Model.Entities.Concrete;
 
-namespace SprinklingApp.Model.Entities.Concrete
+namespace SprinklingApp.Model.DTOs.Concrete
 {
-    public class Valve : BaseEntity
+    public class ValveDTO: BaseModelDTO
     {
         public virtual int Pin { get; set; }
         public virtual float Pressure { get; set; }
         public virtual string Name { get; set; }
 
-        [ForeignKey("Raspberry")]
         public virtual long RaspberryId { get; set; }
 
         public virtual Raspberry Raspberry { get; set; }

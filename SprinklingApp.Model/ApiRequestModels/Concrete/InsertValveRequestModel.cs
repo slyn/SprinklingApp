@@ -2,8 +2,7 @@
 
 namespace SprinklingApp.Model.ApiRequestModels.Concrete
 {
-    public class UpdateGroupRequestModel:BaseGroupRequest
+    public class InsertValveRequestModel : BaseValveRequest
     {
-        public virtual long GroupId { get; set; }
     }
 }

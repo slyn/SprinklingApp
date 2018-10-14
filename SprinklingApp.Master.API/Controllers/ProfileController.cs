@@ -8,38 +8,38 @@ using System.Linq;
 
 namespace SprinklingApp.Master.API.Controllers
 {
-    [Route(Routes.Group)]
-    public class GroupController : BaseMasterController
+    [Route(Routes.Profile)]
+    public class ProfileController : BaseMasterController
     {
-        private readonly IGroupProcedure _procedure;
-        public GroupController(IGroupProcedure procedure)
+        private readonly IProfileProcedure _procedure;
+        public ProfileController(IProfileProcedure procedure)
         {
             _procedure = procedure;
         }
-
+        
         [HttpGet]
-        public ActionResult<List<GroupResponseModel>> Get()
+        public ActionResult<List<ProfileResponseModel>> Get()
         {
-            var result = _procedure.GetList()?.ToList();
+            var result = _procedure.GetList().ToList();
             return result;
         }
 
         [HttpGet("{id}")]
-        public ActionResult<GroupResponseModel> Get(long id)
+        public ActionResult<ProfileResponseModel> Get(long id)
         {
             var result = _procedure.Get(id);
             return result;
         }
 
         [HttpPost]
-        public ActionResult<GroupResponseModel> Post([FromBody]InsertGroupRequestModel requestModel)
+        public ActionResult<ProfileResponseModel> Post([FromBody]InsertProfileRequestModel requestModel)
         {
             var result = _procedure.Insert(requestModel);
             return result;
         }
 
         [HttpPut]
-        public ActionResult<GroupResponseModel> Put([FromBody]UpdateGroupRequestModel requestModel)
+        public ActionResult<ProfileResponseModel> Put([FromBody]UpdateProfileRequestModel requestModel)
         {
             var result = _procedure.Update(requestModel);
             return result;

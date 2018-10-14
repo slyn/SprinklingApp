@@ -2,8 +2,7 @@
 
 namespace SprinklingApp.Model.ApiRequestModels.Concrete
 {
-    public class UpdateGroupRequestModel:BaseGroupRequest
+    public class InsertProfileRequestModel : BaseProfileRequest
     {
-        public virtual long GroupId { get; set; }
     }
 }

@@ -26,6 +26,8 @@ namespace SprinklingApp.DataAccess
         {
             var file = $"storage_{typeof(TEntity).Name}.json";
             var filePath = Path.Combine(_storageDirectory, file);
+            if (!FileOps.IsExistingFile(filePath))
+                return null;
             var content = FileOps.ReadText(filePath);
             var dataList = (IEnumerable<TEntity>)_serializor.Deserialize<IEnumerable<TEntity>>(content);
 
@@ -39,7 +41,7 @@ namespace SprinklingApp.DataAccess
             var filePath = Path.Combine(_storageDirectory, file);
 
             if (!FileOps.IsExistingFile(filePath))
-                return new List<TEntity>();
+                return null;
 
             var content = FileOps.ReadText(filePath);
             var responseList = (IEnumerable<TEntity>)_serializor.Deserialize<IEnumerable<TEntity>>(content);
@@ -54,14 +56,18 @@ namespace SprinklingApp.DataAccess
 
             var file = $"storage_{typeof(TEntity).Name}.json";
             var filePath = Path.Combine(_storageDirectory, file);
-            if (FileOps.IsExistingFile(filePath))
+            bool fileExist = FileOps.IsExistingFile(filePath);
+            if (fileExist)
             {
                 content = FileOps.ReadText(filePath);
                 responseList = (IList<TEntity>)_serializor.Deserialize<IEnumerable<TEntity>>(content);
             }
             else responseList = new List<TEntity>();
+            SetId(entity);
             responseList.Add(entity);
             content = _serializor.Serialize(responseList).ToString();
+            if (fileExist)
+                FileOps.DeleteFile(filePath);
             FileOps.WriteFile(filePath, content, new FileWriteOptions { OverwriteFileIfExists = true, CreateDirectoryIfNotExists = true });
 
             return entity;
@@ -71,8 +77,8 @@ namespace SprinklingApp.DataAccess
         {
             var file = $"storage_{typeof(TEntity).Name}.json";
             var filePath = Path.Combine(_storageDirectory, file);
-
-            if (!FileOps.IsExistingFile(filePath))
+            var fileExist = FileOps.IsExistingFile(filePath);
+            if (!fileExist)
                 throw new Exception("Update operation failed! Stroage file not found.");
 
             var content = FileOps.ReadText(filePath);
@@ -85,15 +91,17 @@ namespace SprinklingApp.DataAccess
             responseItem = entity;
 
             content = _serializor.Serialize(dataList).ToString();
-            FileOps.WriteFile(filePath, content, new FileWriteOptions { OverwriteFileIfExists = true, CreateDirectoryIfNotExists = true });
+            if (fileExist)
+                FileOps.DeleteFile(filePath);
+            FileOps.WriteFile(filePath, content, new FileWriteOptions { OverwriteFileIfExists = true, CreateDirectoryIfNotExists = true, });
         }
 
         public void Delete<TEntity>(TEntity entity) where TEntity : BaseEntity, new()
         {
             var file = $"storage_{typeof(TEntity).Name}.json";
             var filePath = Path.Combine(_storageDirectory, file);
-
-            if (!FileOps.IsExistingFile(filePath))
+            var fileExist = FileOps.IsExistingFile(filePath);
+            if (!fileExist)
                 throw new Exception("Delete operation failed! Stroage file not found.");
 
             var content = FileOps.ReadText(filePath);
@@ -106,8 +114,26 @@ namespace SprinklingApp.DataAccess
             dataList.Remove(responseItem);
 
             content = _serializor.Serialize(dataList).ToString();
+            if (fileExist)
+                FileOps.DeleteFile(filePath);
             FileOps.WriteFile(filePath, content, new FileWriteOptions { OverwriteFileIfExists = true, CreateDirectoryIfNotExists = true });
-            
+
+        }
+        private void SetId<TEntity>(TEntity item) where TEntity : BaseEntity, new()
+        {
+            if (item.Id != default(long))
+                throw new Exception("Error! Id field should be default!");
+
+            item.Id = GetNextIdValue<TEntity>();
+        }
+
+        private long GetNextIdValue<TEntity>() where TEntity : BaseEntity, new()
+        {
+            var list = GetList<TEntity>(x => true);
+            var last = list?.LastOrDefault();
+            if (last != null)
+                return last.Id + 1;
+            else return 1;
         }
     }
 }

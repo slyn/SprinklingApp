@@ -11,12 +11,14 @@ namespace SprinklingApp.Service.Procedures.Concrete
     public class GroupProcedure : IGroupProcedure
     {
         private readonly IGroupService _groupService;
+        private readonly IValveService _valveService;
 
-        public GroupProcedure(IGroupService groupService)
+        public GroupProcedure(IGroupService groupService, IValveService valveService)
         {
             _groupService = groupService;
-
+            _valveService = valveService;
         }
+
         public GroupResponseModel Get(long id)
         {
             var dtoItem = _groupService.Get(id);
@@ -27,13 +29,14 @@ namespace SprinklingApp.Service.Procedures.Concrete
         public IEnumerable<GroupResponseModel> GetList()
         {
             var dtoItem = _groupService.GetList();
-            var itemList = dtoItem.Select(x => ModelBinder.Instance.ConvertToGroupResponseModel(x));
+            var itemList = dtoItem?.Select(x => ModelBinder.Instance.ConvertToGroupResponseModel(x));
             return itemList;
         }
 
         public GroupResponseModel Insert(InsertGroupRequestModel requestModel)
         {
-            var dtoItem = ModelBinder.Instance.ConvertToGroupDTO(requestModel);
+            var valves = _valveService.GetListByIds(requestModel.ValveIdList.ToList());
+            var dtoItem = ModelBinder.Instance.ConvertToGroupDTO(requestModel,valves);
             dtoItem = _groupService.Insert(dtoItem);
             var resultModel = ModelBinder.Instance.ConvertToGroupResponseModel(dtoItem);
             return resultModel;

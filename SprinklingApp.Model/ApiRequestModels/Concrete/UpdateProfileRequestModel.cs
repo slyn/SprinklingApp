@@ -2,8 +2,8 @@
 
 namespace SprinklingApp.Model.ApiRequestModels.Concrete
 {
-    public class UpdateGroupRequestModel:BaseGroupRequest
+    public class UpdateProfileRequestModel : BaseProfileRequest
     {
-        public virtual long GroupId { get; set; }
+        public virtual long ProfileId { get; set; }
     }
 }

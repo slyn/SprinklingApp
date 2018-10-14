@@ -8,38 +8,38 @@ using System.Linq;
 
 namespace SprinklingApp.Master.API.Controllers
 {
-    [Route(Routes.Group)]
-    public class GroupController : BaseMasterController
+    [Route(Routes.Raspberry)]
+    public class RaspberryController : BaseMasterController
     {
-        private readonly IGroupProcedure _procedure;
-        public GroupController(IGroupProcedure procedure)
+        private readonly IRaspberryProcedure _procedure;
+        public RaspberryController(IRaspberryProcedure procedure)
         {
             _procedure = procedure;
         }
-
+        
         [HttpGet]
-        public ActionResult<List<GroupResponseModel>> Get()
+        public ActionResult<List<RaspberryResponseModel>> Get()
         {
             var result = _procedure.GetList()?.ToList();
             return result;
         }
 
         [HttpGet("{id}")]
-        public ActionResult<GroupResponseModel> Get(long id)
+        public ActionResult<RaspberryResponseModel> Get(long id)
         {
             var result = _procedure.Get(id);
             return result;
         }
 
         [HttpPost]
-        public ActionResult<GroupResponseModel> Post([FromBody]InsertGroupRequestModel requestModel)
+        public ActionResult<RaspberryResponseModel> Post([FromBody]InsertRaspberryRequestModel requestModel)
         {
             var result = _procedure.Insert(requestModel);
             return result;
         }
 
         [HttpPut]
-        public ActionResult<GroupResponseModel> Put([FromBody]UpdateGroupRequestModel requestModel)
+        public ActionResult<RaspberryResponseModel> Put([FromBody]UpdateRaspberryRequestModel requestModel)
         {
             var result = _procedure.Update(requestModel);
             return result;

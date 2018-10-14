@@ -1,22 +1,19 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Reflection;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using Newtonsoft.Json.Serialization;
 using SprinklingApp.Common.SerializationOperator;
 using SprinklingApp.DataAccess;
 using SprinklingApp.Service.EntityServices.Abstract;
 using SprinklingApp.Service.EntityServices.Concrete;
+using SprinklingApp.Service.Helper;
 using SprinklingApp.Service.Procedures.Abstract;
 using SprinklingApp.Service.Procedures.Concrete;
 
@@ -44,11 +41,17 @@ namespace SprinklingApp.Master.API
 
             #region [ EntityService ]
             services.TryAddScoped<IGroupService, GroupModelService>();
+            services.TryAddScoped<IValveService, ValveModelService>();
+            services.TryAddScoped<IProfileService, ProfileModelService>();
+            services.TryAddScoped<IRaspberryService, RaspberryModelService>();
 
             #endregion
 
             #region [ Procedures ]
             services.TryAddScoped<IGroupProcedure, GroupProcedure>(); 
+            services.TryAddScoped<IValveProcedure, ValveProcedure>(); 
+            services.TryAddScoped<IProfileProcedure, ProfileProcedure>(); 
+            services.TryAddScoped<IRaspberryProcedure, RaspberryProcedure>(); 
             #endregion
         }
 

@@ -2,8 +2,8 @@
 
 namespace SprinklingApp.Model.ApiRequestModels.Concrete
 {
-    public class UpdateGroupRequestModel:BaseGroupRequest
+    public class UpdateRaspberryRequestModel : BaseRaspberryRequest
     {
-        public virtual long GroupId { get; set; }
+        public virtual long RaspberryId { get; set; }
     }
 }
