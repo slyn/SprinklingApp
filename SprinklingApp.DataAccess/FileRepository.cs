@@ -88,7 +88,10 @@ namespace SprinklingApp.DataAccess
             if (responseItem == null)
                 throw new Exception($"Update operation failed! Item not found Type: {entity.GetType().Name} Id:{entity.Id}");
 
-            responseItem = entity;
+            var index = dataList.IndexOf(responseItem);
+            dataList[index] = entity;
+
+            //responseItem = entity;
 
             content = _serializor.Serialize(dataList).ToString();
             if (fileExist)
