@@ -1,4 +1,5 @@
-﻿using SprinklingApp.Model.Entities.Abstract;
+﻿using Newtonsoft.Json;
+using SprinklingApp.Model.Entities.Abstract;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SprinklingApp.Model.Entities.Concrete
@@ -11,7 +12,7 @@ namespace SprinklingApp.Model.Entities.Concrete
 
         [ForeignKey("Raspberry")]
         public virtual long RaspberryId { get; set; }
-
+        [JsonIgnore]
         public virtual Raspberry Raspberry { get; set; }
     }
 }

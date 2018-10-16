@@ -5,12 +5,14 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Newtonsoft.Json.Serialization;
 using SprinklingApp.Common.SerializationOperator;
 using SprinklingApp.DataAccess;
+using SprinklingApp.DataAccess.ORM.EFCore;
 using SprinklingApp.Service.EntityServices.Abstract;
 using SprinklingApp.Service.EntityServices.Concrete;
 using SprinklingApp.Service.Helper;
@@ -34,10 +36,16 @@ namespace SprinklingApp.Master.API
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
                 .AddJsonOptions(options => options.SerializerSettings.ContractResolver = new DefaultContractResolver());
 
-            //string storageDirectory = Configuration.GetSection("StorageDirectory")?.Value;
-            var codeBase = new Uri(Assembly.GetExecutingAssembly().CodeBase).LocalPath;
-            var currentFolder = Path.GetDirectoryName(codeBase);
-            services.TryAddScoped<IRepository>( x => new FileRepository<JsonSerialization>(currentFolder));
+            services.AddDbContext<SpringklingContext>(options =>
+                  options
+                  .UseLazyLoadingProxies()
+                  .UseSqlite("Data Source=Sprinkling.db"));
+            services.TryAddScoped<IRepository,EFCoreRepository>();
+
+            ////string storageDirectory = Configuration.GetSection("StorageDirectory")?.Value;
+            //var codeBase = new Uri(Assembly.GetExecutingAssembly().CodeBase).LocalPath;
+            //var currentFolder = Path.GetDirectoryName(codeBase);
+            //services.TryAddScoped<IRepository>( x => new FileRepository<JsonSerialization>(currentFolder));
 
             #region [ EntityService ]
             services.TryAddScoped<IGroupService, GroupModelService>();
