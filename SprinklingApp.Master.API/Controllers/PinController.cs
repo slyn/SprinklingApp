@@ -23,7 +23,7 @@ namespace SprinklingApp.Master.API.Controllers
             if (string.IsNullOrWhiteSpace(ip))
                 throw new System.Exception(" IP address of Valve can not found!");
 
-            var url = "http://"+ip + "/api/Open/" + valveDto.Pin;
+            var url = "http://"+ip + "/api/Open/" + valveDto.ActivatePin;
 
             Get(url);
             return Ok(200);
@@ -38,7 +38,7 @@ namespace SprinklingApp.Master.API.Controllers
             if (string.IsNullOrWhiteSpace(ip))
                 throw new System.Exception("IP address of Valve  can not found!");
 
-            var url = "http://" + ip + "/api/Close/" + valveDto.Pin;
+            var url = "http://" + ip + "/api/Close/" + valveDto.DisabledPin;
 
             Get(url);
             return Ok(200);

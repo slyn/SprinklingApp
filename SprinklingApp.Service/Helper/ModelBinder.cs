@@ -66,7 +66,7 @@ namespace SprinklingApp.Service.Helper
             return result;
 
         }
-        public GroupDTO ConvertToGroupDTO(UpdateGroupRequestModel requestModel)
+        public GroupDTO ConvertToGroupDTO(UpdateGroupRequestModel requestModel, IEnumerable<ValveDTO> valves)
         {
             var result = new GroupDTO()
             {
@@ -75,7 +75,9 @@ namespace SprinklingApp.Service.Helper
                 Duration = requestModel.Duration,
                 Name = requestModel.Name,
                 Unit = requestModel.Unit,
-                //ValveList = requestModel.ValveList // TODO :: Get Valve List
+                Valves = requestModel.ValveIdList != null ? 
+                                    valves.Where(x => x.IsActive && requestModel.ValveIdList.Contains(x.Id)).Select(x => ConvertToValve(x)) : 
+                                    new List<Valve>()
             };
 
             return result;
@@ -104,7 +106,8 @@ namespace SprinklingApp.Service.Helper
                 Id = dtoItem.Id,
                 IsActive = dtoItem.IsActive,
                 Name = dtoItem.Name,
-                Pin = dtoItem.Pin,
+                ActivatePin = dtoItem.ActivatePin,
+                DisabledPin = dtoItem.DisabledPin,
                 Pressure = dtoItem.Pressure,
                 RaspberryId = dtoItem.RaspberryId
             };
@@ -118,7 +121,8 @@ namespace SprinklingApp.Service.Helper
                 Id = entity.Id,
                 Name = entity.Name,
                 IsActive = entity.IsActive,
-                Pin = entity.Pin,
+                ActivatePin = entity.ActivatePin,
+                DisabledPin = entity.DisabledPin,
                 Pressure = entity.Pressure,
                 RaspberryId = entity.RaspberryId,
                 Raspberry = raspberry
@@ -132,7 +136,8 @@ namespace SprinklingApp.Service.Helper
             {
                 IsActive = true,
                 Name = requestModel.Name,
-                Pin = requestModel.Pin,
+                ActivatePin = requestModel.ActivatePin,
+                DisabledPin = requestModel.DisabledPin,
                 Pressure = requestModel.Pressure,
                 RaspberryId = requestModel.RaspberryId
             };
@@ -145,7 +150,8 @@ namespace SprinklingApp.Service.Helper
             var result = new ValveDTO()
             {
                 Id = requestModel.ValveId,
-                Pin = requestModel.Pin,
+                ActivatePin = requestModel.ActivatePin,
+                DisabledPin = requestModel.DisabledPin,
                 IsActive = true,
                 Name = requestModel.Name,
                 Pressure = requestModel.Pressure,
@@ -164,7 +170,8 @@ namespace SprinklingApp.Service.Helper
                 Id = dtoItem.Id,
                 Name = dtoItem.Name,
                 Pressure = dtoItem.Pressure,
-                Pin = dtoItem.Pin,
+                ActivatePin = dtoItem.ActivatePin,
+                DisabledPin = dtoItem.DisabledPin,
                 RaspberryId = dtoItem.RaspberryId
             };
 
@@ -273,23 +280,25 @@ namespace SprinklingApp.Service.Helper
 
             return result;
         }
-        public ProfileDTO ConvertToProfileDTO(InsertProfileRequestModel requestModel)
+        public ProfileDTO ConvertToProfileDTO(InsertProfileRequestModel requestModel,IEnumerable<GroupDTO> groups)
         {
             var result = new ProfileDTO()
             {
-                //Id = // sıraki Id atanacak
+                //Id =
                 IsActive = true,
                 Name = requestModel.Name,
                 DayOfWeek = requestModel.DayOfWeek,
                 StartHour = requestModel.StartHour,
                 StartMinute = requestModel.StartMinute,
-                //Groups = requestModel.GroupIdList
+                Groups = requestModel.GroupIdList != null ?
+                                    groups.Where(x => x.IsActive && requestModel.GroupIdList.Contains(x.Id)).Select(x => ConvertToGroup(x)) :
+                                    new List<Group>()
             };
-
+            
             return result;
 
         }
-        public ProfileDTO ConvertToProfileDTO(UpdateProfileRequestModel requestModel)
+        public ProfileDTO ConvertToProfileDTO(UpdateProfileRequestModel requestModel, IEnumerable<GroupDTO> groups)
         {
             var result = new ProfileDTO()
             {
@@ -299,7 +308,9 @@ namespace SprinklingApp.Service.Helper
                 DayOfWeek = requestModel.DayOfWeek,
                 StartHour = requestModel.StartHour,
                 StartMinute = requestModel.StartMinute,
-                //Groups = requestModel.GroupIdList
+                Groups = requestModel.GroupIdList != null ?
+                                    groups.Where(x => x.IsActive && requestModel.GroupIdList.Contains(x.Id)).Select(x => ConvertToGroup(x)) :
+                                    new List<Group>()
             };
 
             return result;
@@ -315,7 +326,7 @@ namespace SprinklingApp.Service.Helper
                 DayOfWeek = dtoItem.DayOfWeek,
                 StartHour = dtoItem.StartHour,
                 StartMinute = dtoItem.StartMinute,
-                //Groups = 
+                Groups = dtoItem.Groups
             };
 
             return result;

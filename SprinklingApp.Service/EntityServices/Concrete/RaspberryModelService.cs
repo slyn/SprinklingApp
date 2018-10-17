@@ -58,7 +58,8 @@ namespace SprinklingApp.Service.EntityServices.Concrete
                 {
                     IsActive = true,
                     Name = valve.Name,
-                    Pin = valve.Pin,
+                    ActivatePin = valve.ActivatePin,
+                    DisabledPin = valve.DisabledPin,
                     Pressure = valve.Pressure,
                     RaspberryId = entity.Id
                 };
@@ -95,7 +96,8 @@ namespace SprinklingApp.Service.EntityServices.Concrete
                     {
                         IsActive = true,
                         Name = valve.Name,
-                        Pin = valve.Pin,
+                        ActivatePin = valve.ActivatePin,
+                        DisabledPin = valve.DisabledPin,
                         Pressure = valve.Pressure,
                         RaspberryId = dtoItem.Id
                     };
@@ -110,7 +112,8 @@ namespace SprinklingApp.Service.EntityServices.Concrete
                     {
                         IsActive = true,
                         Name = valve.Name,
-                        Pin = valve.Pin,
+                        ActivatePin = valve.ActivatePin,
+                        DisabledPin = valve.DisabledPin,
                         Pressure = valve.Pressure,
                         RaspberryId = dtoItem.Id
                     };

@@ -6,7 +6,8 @@ namespace SprinklingApp.Model.Entities.Concrete
 {
     public class Valve : BaseEntity
     {
-        public virtual int Pin { get; set; }
+        public virtual int ActivatePin { get; set; }
+        public virtual int DisabledPin { get; set; }
         public virtual float Pressure { get; set; }
         public virtual string Name { get; set; }
 

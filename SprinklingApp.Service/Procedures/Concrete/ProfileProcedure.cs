@@ -11,11 +11,12 @@ namespace SprinklingApp.Service.Procedures.Concrete
     public class ProfileProcedure : IProfileProcedure
     {
         private readonly IProfileService _profileService;
+        private readonly IGroupService _groupService;
 
-        public ProfileProcedure(IProfileService profileService)
+        public ProfileProcedure(IProfileService profileService,IGroupService groupService)
         {
             _profileService = profileService;
-
+            _groupService = groupService;
         }
         
         public ProfileResponseModel Get(long id)
@@ -34,7 +35,8 @@ namespace SprinklingApp.Service.Procedures.Concrete
 
         public ProfileResponseModel Insert(InsertProfileRequestModel requestModel)
         {
-            var dtoItem = ModelBinder.Instance.ConvertToProfileDTO(requestModel);
+            var groups = _groupService.GetListByIds(requestModel.GroupIdList.ToList());
+            var dtoItem = ModelBinder.Instance.ConvertToProfileDTO(requestModel, groups);
             dtoItem = _profileService.Insert(dtoItem);
             var resultModel = ModelBinder.Instance.ConvertToProfileResponseModel(dtoItem);
             return resultModel;
@@ -42,7 +44,8 @@ namespace SprinklingApp.Service.Procedures.Concrete
 
         public ProfileResponseModel Update(UpdateProfileRequestModel requestModel)
         {
-            var dtoItem = ModelBinder.Instance.ConvertToProfileDTO(requestModel);
+            var groups = _groupService.GetListByIds(requestModel.GroupIdList.ToList());
+            var dtoItem = ModelBinder.Instance.ConvertToProfileDTO(requestModel, groups);
             dtoItem = _profileService.Update(dtoItem);
             var resultModel = ModelBinder.Instance.ConvertToProfileResponseModel(dtoItem);
             return resultModel;

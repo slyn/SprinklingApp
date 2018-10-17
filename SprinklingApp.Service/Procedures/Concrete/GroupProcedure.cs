@@ -44,7 +44,8 @@ namespace SprinklingApp.Service.Procedures.Concrete
 
         public GroupResponseModel Update(UpdateGroupRequestModel requestModel)
         {
-            var dtoItem = ModelBinder.Instance.ConvertToGroupDTO(requestModel);
+            var valves = _valveService.GetListByIds(requestModel.ValveIdList.ToList());
+            var dtoItem = ModelBinder.Instance.ConvertToGroupDTO(requestModel,valves);
             dtoItem = _groupService.Update(dtoItem);
             var resultModel = ModelBinder.Instance.ConvertToGroupResponseModel(dtoItem);
             return resultModel;

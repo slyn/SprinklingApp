@@ -38,7 +38,7 @@ namespace SprinklingApp.Master.API
 
             services.AddDbContext<SpringklingContext>(options =>
                   options
-                  .UseLazyLoadingProxies()
+                  //.UseLazyLoadingProxies()
                   .UseSqlite("Data Source=Sprinkling.db"));
             services.TryAddScoped<IRepository,EFCoreRepository>();
 

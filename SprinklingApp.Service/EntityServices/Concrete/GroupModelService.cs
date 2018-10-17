@@ -133,5 +133,27 @@ namespace SprinklingApp.Service.EntityServices.Concrete
                 _accessor.Delete(item);
             }
         }
+
+        public IEnumerable<GroupDTO> GetListByIds(IList<long> ids)
+        {
+            //var raspberries = _accessor.GetList<Valve>(x => x.IsActive);
+            var groupItems = _accessor.GetList<Group>(x => x.IsActive && ids.Contains(x.Id));
+
+            var resultList = new List<GroupDTO>();
+            if (groupItems != null && groupItems.Count()>0)
+            {
+                var groupValveMappingList = _accessor.GetList<ValveGroupMapping>(x => x.IsActive && ids.Contains(x.GroupId));
+
+                foreach (var group in groupItems)
+                {
+                    var valveIds = groupValveMappingList.Where(x => x.IsActive && x.GroupId == group.Id).Select(x => x.ValveId);
+                    var valves = _accessor.GetList<Valve>(x => x.IsActive && valveIds.Contains(x.Id));
+                    var dtoItem = ModelBinder.Instance.ConvertToGroupDTO(group, valves);
+                    resultList.Add(dtoItem);
+                }
+            }
+
+            return resultList;
+        }
     }
 }
