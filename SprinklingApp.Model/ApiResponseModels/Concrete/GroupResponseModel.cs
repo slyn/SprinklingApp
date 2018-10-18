@@ -10,8 +10,9 @@ namespace SprinklingApp.Model.ApiResponseModels.Concrete
         public long Id { get; set; }
 
         public virtual string Name { get; set; }
-        public virtual IEnumerable<Valve> Valves { get; set; }
         public virtual int Duration { get; set; }
         public virtual TimeUnit Unit { get; set; }
+        public virtual IEnumerable<Valve> Valves { get; set; }
+
     }
 }

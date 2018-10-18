@@ -12,6 +12,7 @@ namespace SprinklingApp.Service.Procedures.Concrete
     {
         private readonly IGroupService _groupService;
         private readonly IValveService _valveService;
+        private readonly  _valveService;
 
         public GroupProcedure(IGroupService groupService, IValveService valveService)
         {
@@ -21,8 +22,10 @@ namespace SprinklingApp.Service.Procedures.Concrete
 
         public GroupResponseModel Get(long id)
         {
-            var dtoItem = _groupService.Get(id);
-            var item = ModelBinder.Instance.ConvertToGroupResponseModel(dtoItem);
+            var entity = _groupService.Get(id);
+            var valveGroupMappings = _gr
+            var valves = _groupService.GetListByGroup(entity.Id);
+            var item = ModelBinder.Instance.ConvertToGroupResponseModel(entity,valves);
             return item;
         }
 

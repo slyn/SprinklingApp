@@ -13,7 +13,7 @@ namespace SprinklingApp.Model.Entities.Concrete
 
         [ForeignKey("Raspberry")]
         public virtual long RaspberryId { get; set; }
-        [JsonIgnore]
+
         public virtual Raspberry Raspberry { get; set; }
     }
 }

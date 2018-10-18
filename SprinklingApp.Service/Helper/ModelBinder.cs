@@ -1,6 +1,5 @@
 ﻿using SprinklingApp.Model.ApiRequestModels.Concrete;
 using SprinklingApp.Model.ApiResponseModels.Concrete;
-using SprinklingApp.Model.DTOs.Concrete;
 using SprinklingApp.Model.Entities.Concrete;
 using System;
 using System.Collections.Generic;
@@ -22,28 +21,77 @@ namespace SprinklingApp.Service.Helper
         internal static ModelBinder Instance => _instance.Value;
         #endregion
 
-        public Group ConvertToGroup(GroupDTO dtoItem)
-        {
-            var result = new Group()
-            {
-                Id = dtoItem.Id,
-                IsActive = dtoItem.IsActive,
-                Duration = dtoItem.Duration,
-                Name = dtoItem.Name,
-                Unit = dtoItem.Unit
+        //public Group ConvertToGroup(GroupDTO dtoItem)
+        //{
+        //    var result = new Group()
+        //    {
+        //        Id = dtoItem.Id,
+        //        IsActive = dtoItem.IsActive,
+        //        Duration = dtoItem.Duration,
+        //        Name = dtoItem.Name,
+        //        Unit = dtoItem.Unit
                 
-            };
+        //    };
 
-            return result;
-        }
-        public GroupDTO ConvertToGroupDTO(Group entity, IEnumerable<Valve> valves)
+        //    return result;
+        //}
+        //public GroupDTO ConvertToGroupDTO(Group entity, IEnumerable<Valve> valves)
+        //public GroupDTO ConvertToGroupDTO(Group entity, IEnumerable<ValveDTO> valves)
+        //{
+        //    if (entity == null)
+        //        return null;
+        //    var result = new GroupDTO()
+        //    {
+        //        Id = entity.Id,
+        //        IsActive = entity.IsActive,
+        //        Duration = entity.Duration,
+        //        Name = entity.Name,
+        //        Unit = entity.Unit,
+        //        Valves = valves
+        //    };
+
+        //    return result;
+        //}
+        //public GroupDTO ConvertToGroupDTO(InsertGroupRequestModel requestModel,IEnumerable<ValveDTO> valves)
+        //{
+        //    var result = new GroupDTO()
+        //    {
+        //        IsActive = true,
+        //        Duration = requestModel.Duration,
+        //        Name = requestModel.Name,
+        //        Unit = requestModel.Unit,
+        //        Valves = valves
+        //        //Valves =valves.Select(x=>ConvertToValve(x))
+        //    };
+
+        //    return result;
+
+        //}
+        //public GroupDTO ConvertToGroupDTO(UpdateGroupRequestModel requestModel, IEnumerable<ValveDTO> valves)
+        //{
+        //    var result = new GroupDTO()
+        //    {
+        //        Id = requestModel.GroupId,
+        //        IsActive = true,
+        //        Duration = requestModel.Duration,
+        //        Name = requestModel.Name,
+        //        Unit = requestModel.Unit,
+        //        Valves = valves
+        //        //Valves = requestModel.ValveIdList != null ? 
+        //        //                    valves.Where(x => x.IsActive && requestModel.ValveIdList.Contains(x.Id)).Select(x => ConvertToValve(x)) : 
+        //        //                    new List<Valve>()
+        //    };
+
+        //    return result;
+
+        //}
+        public GroupResponseModel ConvertToGroupResponseModel(Group entity,IEnumerable<Valve> valves)
         {
             if (entity == null)
                 return null;
-            var result = new GroupDTO()
+            var result = new GroupResponseModel()
             {
                 Id = entity.Id,
-                IsActive = entity.IsActive,
                 Duration = entity.Duration,
                 Name = entity.Name,
                 Unit = entity.Unit,
@@ -52,87 +100,41 @@ namespace SprinklingApp.Service.Helper
 
             return result;
         }
-        public GroupDTO ConvertToGroupDTO(InsertGroupRequestModel requestModel,IEnumerable<ValveDTO> valves)
-        {
-            var result = new GroupDTO()
-            {
-                IsActive = true,
-                Duration = requestModel.Duration,
-                Name = requestModel.Name,
-                Unit = requestModel.Unit,
-                Valves =valves.Select(x=>ConvertToValve(x))
-            };
 
-            return result;
+        //public Valve ConvertToValve(ValveDTO dtoItem)
+        //{
+        //    var result = new Valve()
+        //    {
+        //        Id = dtoItem.Id,
+        //        IsActive = dtoItem.IsActive,
+        //        Name = dtoItem.Name,
+        //        ActivatePin = dtoItem.ActivatePin,
+        //        DisabledPin = dtoItem.DisabledPin,
+        //        Pressure = dtoItem.Pressure,
+        //        RaspberryId = dtoItem.RaspberryId
+        //    };
 
-        }
-        public GroupDTO ConvertToGroupDTO(UpdateGroupRequestModel requestModel, IEnumerable<ValveDTO> valves)
-        {
-            var result = new GroupDTO()
-            {
-                Id = requestModel.GroupId,
-                IsActive = true,
-                Duration = requestModel.Duration,
-                Name = requestModel.Name,
-                Unit = requestModel.Unit,
-                Valves = requestModel.ValveIdList != null ? 
-                                    valves.Where(x => x.IsActive && requestModel.ValveIdList.Contains(x.Id)).Select(x => ConvertToValve(x)) : 
-                                    new List<Valve>()
-            };
+        //    return result;
+        //}
+        //public ValveDTO ConvertToValveDTO(Valve entity, Raspberry raspberry)
+        //{
+        //    var result = new ValveDTO()
+        //    {
+        //        Id = entity.Id,
+        //        Name = entity.Name,
+        //        IsActive = entity.IsActive,
+        //        ActivatePin = entity.ActivatePin,
+        //        DisabledPin = entity.DisabledPin,
+        //        Pressure = entity.Pressure,
+        //        RaspberryId = entity.RaspberryId,
+        //        //Raspberry = raspberry
+        //    };
 
-            return result;
-
-        }
-        public GroupResponseModel ConvertToGroupResponseModel(GroupDTO dtoItem)
-        {
-            if (dtoItem == null)
-                return null;
-            var result = new GroupResponseModel()
-            {
-                Id = dtoItem.Id,
-                Duration = dtoItem.Duration,
-                Name = dtoItem.Name,
-                Unit = dtoItem.Unit,
-                Valves = dtoItem.Valves
-            };
-
-            return result;
-        }
-
-        public Valve ConvertToValve(ValveDTO dtoItem)
+        //    return result;
+        //}
+        public Valve ConvertToValve(InsertValveRequestModel requestModel)
         {
             var result = new Valve()
-            {
-                Id = dtoItem.Id,
-                IsActive = dtoItem.IsActive,
-                Name = dtoItem.Name,
-                ActivatePin = dtoItem.ActivatePin,
-                DisabledPin = dtoItem.DisabledPin,
-                Pressure = dtoItem.Pressure,
-                RaspberryId = dtoItem.RaspberryId
-            };
-
-            return result;
-        }
-        public ValveDTO ConvertToValveDTO(Valve entity, Raspberry raspberry)
-        {
-            var result = new ValveDTO()
-            {
-                Id = entity.Id,
-                Name = entity.Name,
-                IsActive = entity.IsActive,
-                ActivatePin = entity.ActivatePin,
-                DisabledPin = entity.DisabledPin,
-                Pressure = entity.Pressure,
-                RaspberryId = entity.RaspberryId,
-                Raspberry = raspberry
-            };
-
-            return result;
-        }
-        public ValveDTO ConvertToValveDTO(InsertValveRequestModel requestModel)
-        {
-            var result = new ValveDTO()
             {
                 IsActive = true,
                 Name = requestModel.Name,
@@ -145,9 +147,9 @@ namespace SprinklingApp.Service.Helper
             return result;
 
         }
-        public ValveDTO ConvertToValveDTO(UpdateValveRequestModel requestModel)
+        public Valve ConvertToValve(UpdateValveRequestModel requestModel)
         {
-            var result = new ValveDTO()
+            var result = new Valve()
             {
                 Id = requestModel.ValveId,
                 ActivatePin = requestModel.ActivatePin,
@@ -160,7 +162,7 @@ namespace SprinklingApp.Service.Helper
 
             return result;
         }
-        public ValveResponseModel ConvertToValveResponseModel(ValveDTO dtoItem)
+        public ValveResponseModel ConvertToValveResponseModel(Valve dtoItem)
         {
             if (dtoItem == null)
                 return null;
@@ -178,7 +180,7 @@ namespace SprinklingApp.Service.Helper
             return result;
         }
 
-        public Raspberry ConvertToRaspberry(RaspberryDTO dtoItem)
+        public Raspberry ConvertToRaspberry(Raspberry dtoItem)
         {
             var result = new Raspberry()
             {
@@ -191,50 +193,52 @@ namespace SprinklingApp.Service.Helper
 
             return result;
         }
-        public RaspberryDTO ConvertToRaspberryDTO(Raspberry entity, IEnumerable<Valve> valves)
-        {
-            if (entity == null)
-                return null;
+        
+        //public Raspberry ConvertToRaspberryDTO(Raspberry entity, IEnumerable<Valve> valves)
+        //{
+        //    if (entity == null)
+        //        return null;
 
-            var result = new RaspberryDTO()
-            {
-                Id = entity.Id,
-                IsActive = entity.IsActive,
-                Name = entity.Name,
-                IPAddress = entity.IPAddress,
-                Valves = valves
-            };
+        //    var result = new Raspberry()
+        //    {
+        //        Id = entity.Id,
+        //        IsActive = entity.IsActive,
+        //        Name = entity.Name,
+        //        IPAddress = entity.IPAddress,
+        //        Valves = valves
+        //    };
 
-            return result;
-        }
-        public RaspberryDTO ConvertToRaspberryDTO(InsertRaspberryRequestModel requestModel)
+        //    return result;
+        //}
+
+        public Raspberry ConvertToRaspberryDTO(InsertRaspberryRequestModel requestModel,IEnumerable<Valve> valves)
         {
-            var result = new RaspberryDTO()
+            var result = new Raspberry()
             {
                 //Id = // sıraki Id atanacak
                 IsActive = true,
                 Name = requestModel.Name,
                 IPAddress = requestModel.IPAddress,
-                //Valves = requestModel.ValveIdList 
+                Valves = valves //requestModel.ValveIdList 
             };
 
             return result;
 
         }
-        public RaspberryDTO ConvertToRaspberryDTO(UpdateRaspberryRequestModel requestModel)
+        public Raspberry ConvertToRaspberryDTO(UpdateRaspberryRequestModel requestModel, IEnumerable<Valve> valves)
         {
-            var result = new RaspberryDTO()
+            var result = new Raspberry()
             {
                 Id = requestModel.RaspberryId,
                 IsActive = true,
                 Name = requestModel.Name,
                 IPAddress = requestModel.IPAddress,
-                //Valves todo GEt Valve List
+                Valves = valves
             };
 
             return result;
         }
-        public RaspberryResponseModel ConvertToRaspberryResponseModel(RaspberryDTO dtoItem)
+        public RaspberryResponseModel ConvertToRaspberryResponseModel(Raspberry dtoItem)
         {
             if (dtoItem == null)
                 return null;
@@ -249,7 +253,7 @@ namespace SprinklingApp.Service.Helper
             return result;
         }
 
-        public Profile ConvertToProfile(ProfileDTO dtoItem)
+        public Profile ConvertToProfile(Profile dtoItem)
         {
             var result = new Profile()
             {
@@ -263,26 +267,27 @@ namespace SprinklingApp.Service.Helper
 
             return result;
         }
-        public ProfileDTO ConvertToProfileDTO(Profile entity, IEnumerable<Group> groups)
-        {
-            if (entity == null)
-                return null;
-            var result = new ProfileDTO()
-            {
-                Id = entity.Id,
-                IsActive = entity.IsActive,
-                Name = entity.Name,
-                DayOfWeek = entity.DayOfWeek,
-                StartHour = entity.StartHour,
-                StartMinute = entity.StartMinute,
-                Groups = groups
-            };
+        ////public ProfileDTO ConvertToProfileDTO(Profile entity, IEnumerable<Group> groups)
+        //public Profile ConvertToProfileDTO(Profile entity, IEnumerable<Group> groups)
+        //{
+        //    if (entity == null)
+        //        return null;
+        //    var result = new Profile()
+        //    {
+        //        Id = entity.Id,
+        //        IsActive = entity.IsActive,
+        //        Name = entity.Name,
+        //        DayOfWeek = entity.DayOfWeek,
+        //        StartHour = entity.StartHour,
+        //        StartMinute = entity.StartMinute,
+        //        Groups = groups
+        //    };
 
-            return result;
-        }
-        public ProfileDTO ConvertToProfileDTO(InsertProfileRequestModel requestModel,IEnumerable<GroupDTO> groups)
+        //    return result;
+        //}
+        public Profile ConvertToProfile(InsertProfileRequestModel requestModel,IEnumerable<Group> groups)
         {
-            var result = new ProfileDTO()
+            var result = new Profile()
             {
                 //Id =
                 IsActive = true,
@@ -290,17 +295,18 @@ namespace SprinklingApp.Service.Helper
                 DayOfWeek = requestModel.DayOfWeek,
                 StartHour = requestModel.StartHour,
                 StartMinute = requestModel.StartMinute,
-                Groups = requestModel.GroupIdList != null ?
-                                    groups.Where(x => x.IsActive && requestModel.GroupIdList.Contains(x.Id)).Select(x => ConvertToGroup(x)) :
-                                    new List<Group>()
+                Groups = groups
+                //Groups = requestModel.GroupIdList != null ?
+                //                    groups.Where(x => x.IsActive && requestModel.GroupIdList.Contains(x.Id)).Select(x => ConvertToGroup(x)) :
+                //                    new List<Group>()
             };
             
             return result;
 
         }
-        public ProfileDTO ConvertToProfileDTO(UpdateProfileRequestModel requestModel, IEnumerable<GroupDTO> groups)
+        public Profile ConvertToProfileDTO(UpdateProfileRequestModel requestModel, IEnumerable<Group> groups)
         {
-            var result = new ProfileDTO()
+            var result = new Profile()
             {
                 Id = requestModel.ProfileId,
                 IsActive = true,
@@ -308,14 +314,15 @@ namespace SprinklingApp.Service.Helper
                 DayOfWeek = requestModel.DayOfWeek,
                 StartHour = requestModel.StartHour,
                 StartMinute = requestModel.StartMinute,
-                Groups = requestModel.GroupIdList != null ?
-                                    groups.Where(x => x.IsActive && requestModel.GroupIdList.Contains(x.Id)).Select(x => ConvertToGroup(x)) :
-                                    new List<Group>()
+                Groups = groups
+                //Groups = requestModel.GroupIdList != null ?
+                //                    groups.Where(x => x.IsActive && requestModel.GroupIdList.Contains(x.Id)).Select(x => ConvertToGroup(x)) :
+                //                    new List<Group>()
             };
 
             return result;
         }
-        public ProfileResponseModel ConvertToProfileResponseModel(ProfileDTO dtoItem)
+        public ProfileResponseModel ConvertToProfileResponseModel(Profile dtoItem)
         {
             if (dtoItem == null)
                 return null;
