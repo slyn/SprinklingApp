@@ -44,7 +44,6 @@ namespace SprinklingApp.Service.EntityServices.Concrete
 
             var valveMappings = _accessor.GetList<ValveGroupMapping>(x => x.IsActive && x.GroupId == id);
             var profileMappings = _accessor.GetList<ProfileGroupMapping>(x => x.IsActive && x.GroupId == id);
-            _accessor.Delete(entity);
             foreach (var item in valveMappings)
             {
                 _accessor.Delete(item);
@@ -53,6 +52,8 @@ namespace SprinklingApp.Service.EntityServices.Concrete
             {
                 _accessor.Delete(item);
             }
+            _accessor.Delete(entity);
+
         }
 
         public IEnumerable<Group> GetListByIds(IList<long> ids)

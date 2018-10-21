@@ -15,21 +15,21 @@ namespace SprinklingApp.Service.EntityServices.Concrete
         {
             _accessor = new DataAccessor(repo);
         }
-        
-       
-        ProfileGroupMapping IProfileGroupMappingService.Get(long id)
+
+
+        public ProfileGroupMapping Get(long id)
         {
             var item = _accessor.Get<ProfileGroupMapping>(x => x.IsActive && x.Id == id);
             return item;
         }
 
-        IEnumerable<ProfileGroupMapping> IProfileGroupMappingService.GetList()
+        public IEnumerable<ProfileGroupMapping> GetList()
         {
             var itemList = _accessor.GetList<ProfileGroupMapping>(x => x.IsActive);
             return itemList;
         }
 
-        IEnumerable<ProfileGroupMapping> IProfileGroupMappingService.GetListByGroup(long groupid)
+        public IEnumerable<ProfileGroupMapping> GetListByGroup(long groupid)
         {
             var itemList = _accessor.GetList<ProfileGroupMapping>(x => x.IsActive && x.GroupId == groupid);
             return itemList;
@@ -57,6 +57,6 @@ namespace SprinklingApp.Service.EntityServices.Concrete
             var item = Get(id);
             _accessor.Delete(item);
         }
-
+        
     }
 }

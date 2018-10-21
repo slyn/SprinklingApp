@@ -13,6 +13,7 @@ using Newtonsoft.Json.Serialization;
 using SprinklingApp.Common.SerializationOperator;
 using SprinklingApp.DataAccess;
 using SprinklingApp.DataAccess.ORM.EFCore;
+using SprinklingApp.Master.API.Middlewares;
 using SprinklingApp.Service.EntityServices.Abstract;
 using SprinklingApp.Service.EntityServices.Concrete;
 using SprinklingApp.Service.Helper;
@@ -70,7 +71,7 @@ namespace SprinklingApp.Master.API
             {
                 app.UseDeveloperExceptionPage();
             }
-
+            app.UseMiddleware<EnsureCreatedDatabaseMiddleware>();
             app.UseMvc();
         }
     }

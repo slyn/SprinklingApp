@@ -21,20 +21,31 @@ namespace SprinklingApp.Service.Helper
         internal static ModelBinder Instance => _instance.Value;
         #endregion
 
-        //public Group ConvertToGroup(GroupDTO dtoItem)
-        //{
-        //    var result = new Group()
-        //    {
-        //        Id = dtoItem.Id,
-        //        IsActive = dtoItem.IsActive,
-        //        Duration = dtoItem.Duration,
-        //        Name = dtoItem.Name,
-        //        Unit = dtoItem.Unit
-                
-        //    };
+        public Group ConvertToGroup(InsertGroupRequestModel requestModel)
+        {
+            var result = new Group()
+            {
+                IsActive = true,
+                Duration = requestModel.Duration,
+                Name = requestModel.Name,
+                Unit = requestModel.Unit
+            };
 
-        //    return result;
-        //}
+            return result;
+        }
+        public Group ConvertToGroup(UpdateGroupRequestModel requestModel)
+        {
+            var result = new Group()
+            {
+                Id = requestModel.GroupId,
+                IsActive = true,
+                Duration = requestModel.Duration,
+                Name = requestModel.Name,
+                Unit = requestModel.Unit
+            };
+
+            return result;
+        }
         //public GroupDTO ConvertToGroupDTO(Group entity, IEnumerable<Valve> valves)
         //public GroupDTO ConvertToGroupDTO(Group entity, IEnumerable<ValveDTO> valves)
         //{
@@ -138,8 +149,8 @@ namespace SprinklingApp.Service.Helper
             {
                 IsActive = true,
                 Name = requestModel.Name,
-                ActivatePin = requestModel.ActivatePin,
-                DisabledPin = requestModel.DisabledPin,
+                EnablePin = requestModel.EnablePin,
+                DisablePin = requestModel.DisablePin,
                 Pressure = requestModel.Pressure,
                 RaspberryId = requestModel.RaspberryId
             };
@@ -152,8 +163,8 @@ namespace SprinklingApp.Service.Helper
             var result = new Valve()
             {
                 Id = requestModel.ValveId,
-                ActivatePin = requestModel.ActivatePin,
-                DisabledPin = requestModel.DisabledPin,
+                EnablePin = requestModel.EnablePin,
+                DisablePin = requestModel.DisablePin,
                 IsActive = true,
                 Name = requestModel.Name,
                 Pressure = requestModel.Pressure,
@@ -172,8 +183,8 @@ namespace SprinklingApp.Service.Helper
                 Id = dtoItem.Id,
                 Name = dtoItem.Name,
                 Pressure = dtoItem.Pressure,
-                ActivatePin = dtoItem.ActivatePin,
-                DisabledPin = dtoItem.DisabledPin,
+                EnablePin = dtoItem.EnablePin,
+                DisablePin = dtoItem.DisablePin,
                 RaspberryId = dtoItem.RaspberryId
             };
 
@@ -211,21 +222,20 @@ namespace SprinklingApp.Service.Helper
         //    return result;
         //}
 
-        public Raspberry ConvertToRaspberryDTO(InsertRaspberryRequestModel requestModel,IEnumerable<Valve> valves)
+        public Raspberry ConvertToRaspberry(InsertRaspberryRequestModel requestModel,IEnumerable<Valve> valves)
         {
             var result = new Raspberry()
             {
-                //Id = // sıraki Id atanacak
                 IsActive = true,
                 Name = requestModel.Name,
                 IPAddress = requestModel.IPAddress,
-                Valves = valves //requestModel.ValveIdList 
+                Valves = valves
             };
 
             return result;
 
         }
-        public Raspberry ConvertToRaspberryDTO(UpdateRaspberryRequestModel requestModel, IEnumerable<Valve> valves)
+        public Raspberry ConvertToRaspberry(UpdateRaspberryRequestModel requestModel, IEnumerable<Valve> valves)
         {
             var result = new Raspberry()
             {
@@ -285,7 +295,7 @@ namespace SprinklingApp.Service.Helper
 
         //    return result;
         //}
-        public Profile ConvertToProfile(InsertProfileRequestModel requestModel,IEnumerable<Group> groups)
+        public Profile ConvertToProfile(InsertProfileRequestModel requestModel)
         {
             var result = new Profile()
             {
@@ -294,17 +304,13 @@ namespace SprinklingApp.Service.Helper
                 Name = requestModel.Name,
                 DayOfWeek = requestModel.DayOfWeek,
                 StartHour = requestModel.StartHour,
-                StartMinute = requestModel.StartMinute,
-                Groups = groups
-                //Groups = requestModel.GroupIdList != null ?
-                //                    groups.Where(x => x.IsActive && requestModel.GroupIdList.Contains(x.Id)).Select(x => ConvertToGroup(x)) :
-                //                    new List<Group>()
+                StartMinute = requestModel.StartMinute
             };
             
             return result;
 
         }
-        public Profile ConvertToProfileDTO(UpdateProfileRequestModel requestModel, IEnumerable<Group> groups)
+        public Profile ConvertToProfile(UpdateProfileRequestModel requestModel)
         {
             var result = new Profile()
             {
@@ -313,27 +319,23 @@ namespace SprinklingApp.Service.Helper
                 Name = requestModel.Name,
                 DayOfWeek = requestModel.DayOfWeek,
                 StartHour = requestModel.StartHour,
-                StartMinute = requestModel.StartMinute,
-                Groups = groups
-                //Groups = requestModel.GroupIdList != null ?
-                //                    groups.Where(x => x.IsActive && requestModel.GroupIdList.Contains(x.Id)).Select(x => ConvertToGroup(x)) :
-                //                    new List<Group>()
+                StartMinute = requestModel.StartMinute                
             };
 
             return result;
         }
-        public ProfileResponseModel ConvertToProfileResponseModel(Profile dtoItem)
+        public ProfileResponseModel ConvertToProfileResponseModel(Profile item, IEnumerable<Group> groups)
         {
-            if (dtoItem == null)
+            if (item == null)
                 return null;
             var result = new ProfileResponseModel()
             {
-                Id = dtoItem.Id,
-                Name = dtoItem.Name,
-                DayOfWeek = dtoItem.DayOfWeek,
-                StartHour = dtoItem.StartHour,
-                StartMinute = dtoItem.StartMinute,
-                Groups = dtoItem.Groups
+                Id = item.Id,
+                Name = item.Name,
+                DayOfWeek = item.DayOfWeek,
+                StartHour = item.StartHour,
+                StartMinute = item.StartMinute,
+                Groups = groups
             };
 
             return result;

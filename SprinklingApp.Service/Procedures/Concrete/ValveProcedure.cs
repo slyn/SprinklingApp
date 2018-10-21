@@ -20,31 +20,31 @@ namespace SprinklingApp.Service.Procedures.Concrete
 
         public ValveResponseModel Get(long id)
         {
-            var dtoItem = _valveService.Get(id);
-            var item = ModelBinder.Instance.ConvertToValveResponseModel(dtoItem);
+            var valveItem = _valveService.Get(id);
+            var item = ModelBinder.Instance.ConvertToValveResponseModel(valveItem);
             return item;
         }
 
         public IEnumerable<ValveResponseModel> GetList()
         {
-            var dtoItems = _valveService.GetList();
-            var itemList = dtoItems?.Select(x => ModelBinder.Instance.ConvertToValveResponseModel(x));
+            var valveItems = _valveService.GetList();
+            var itemList = valveItems?.Select(x => ModelBinder.Instance.ConvertToValveResponseModel(x));
             return itemList;
         }
 
         public ValveResponseModel Insert(InsertValveRequestModel requestModel)
         {
-            var dtoItem = ModelBinder.Instance.ConvertToValveDTO(requestModel);
-            dtoItem = _valveService.Insert(dtoItem);
-            var resultModel = ModelBinder.Instance.ConvertToValveResponseModel(dtoItem);
+            var valveItem = ModelBinder.Instance.ConvertToValve(requestModel);
+            valveItem = _valveService.Insert(valveItem);
+            var resultModel = ModelBinder.Instance.ConvertToValveResponseModel(valveItem);
             return resultModel;
         }
 
         public ValveResponseModel Update(UpdateValveRequestModel requestModel)
         {
-            var dtoItem = ModelBinder.Instance.ConvertToValveDTO(requestModel);
-            dtoItem = _valveService.Update(dtoItem);
-            var resultModel = ModelBinder.Instance.ConvertToValveResponseModel(dtoItem);
+            var valveItem = ModelBinder.Instance.ConvertToValve(requestModel);
+            valveItem = _valveService.Update(valveItem);
+            var resultModel = ModelBinder.Instance.ConvertToValveResponseModel(valveItem);
             return resultModel;
         }
         public void Delete(long id)
