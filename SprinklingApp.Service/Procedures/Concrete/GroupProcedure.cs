@@ -25,8 +25,13 @@ namespace SprinklingApp.Service.Procedures.Concrete
         public GroupResponseModel Get(long id)
         {
             var group = _groupService.Get(id);
-            var valveIds = _valveGroupMappingService.GetListByGroup(group.Id).Select(x => x.ValveId).ToList();
-            var valves = valveIds.Count() != 0 ? _valveService.GetListByIds(valveIds) : new List<Valve>();
+            IEnumerable<Valve> valves = new List<Valve>();
+
+            if (group!= null)
+            {
+                var valveIds = _valveGroupMappingService.GetListByGroup(group.Id).Select(x => x.ValveId).ToList();
+                valves = valveIds.Count() != 0 ? _valveService.GetListByIds(valveIds):valves;
+            }
 
             var responseModel = ModelBinder.Instance.ConvertToGroupResponseModel(group, valves);
 
