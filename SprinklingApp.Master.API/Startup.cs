@@ -55,6 +55,7 @@ namespace SprinklingApp.Master.API
             services.TryAddScoped<IRaspberryService, RaspberryModelService>();
             services.TryAddScoped<IValveGroupMappingService, ValveGroupMappingModelService>();
             services.TryAddScoped<IProfileGroupMappingService, ProfileGroupMappingModelService>();
+            services.TryAddScoped<IOpenCloseOperationItemService, OpenCloseOperationItemModelService>();
 
             #endregion
 

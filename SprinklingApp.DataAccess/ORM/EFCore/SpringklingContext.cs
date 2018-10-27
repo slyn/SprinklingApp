@@ -15,6 +15,7 @@ namespace SprinklingApp.DataAccess.ORM.EFCore
         public DbSet<Group> Group { get; set; }
         public DbSet<ProfileGroupMapping> ProfileGroupMapping { get; set; }
         public DbSet<ValveGroupMapping> ValveGroupMapping { get; set; }
+        public DbSet<OpenCloseOperationItem> OpenCloseOperation { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
