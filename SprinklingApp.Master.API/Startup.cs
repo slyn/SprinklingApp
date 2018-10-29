@@ -17,6 +17,7 @@ using SprinklingApp.Master.API.Middlewares;
 using SprinklingApp.Service.EntityServices.Abstract;
 using SprinklingApp.Service.EntityServices.Concrete;
 using SprinklingApp.Service.Helper;
+using SprinklingApp.Service.Hubs;
 using SprinklingApp.Service.Procedures.Abstract;
 using SprinklingApp.Service.Procedures.Concrete;
 
@@ -37,6 +38,8 @@ namespace SprinklingApp.Master.API
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
                 .AddJsonOptions(options => options.SerializerSettings.ContractResolver = new DefaultContractResolver());
 
+            services.AddSignalR();
+
             services.AddDbContext<SpringklingContext>(options =>
                   options
                   //.UseLazyLoadingProxies()
@@ -56,15 +59,16 @@ namespace SprinklingApp.Master.API
             services.TryAddScoped<IValveGroupMappingService, ValveGroupMappingModelService>();
             services.TryAddScoped<IProfileGroupMappingService, ProfileGroupMappingModelService>();
             services.TryAddScoped<IOpenCloseOperationItemService, OpenCloseOperationItemModelService>();
-
             #endregion
 
             #region [ Procedures ]
             services.TryAddScoped<IGroupProcedure, GroupProcedure>(); 
             services.TryAddScoped<IValveProcedure, ValveProcedure>(); 
             services.TryAddScoped<IProfileProcedure, ProfileProcedure>(); 
-            services.TryAddScoped<IRaspberryProcedure, RaspberryProcedure>(); 
+            services.TryAddScoped<IRaspberryProcedure, RaspberryProcedure>();
             #endregion
+
+            services.TryAddSingleton<IConnectionManager, ConnectionManager>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -75,6 +79,10 @@ namespace SprinklingApp.Master.API
                 app.UseDeveloperExceptionPage();
             }
             app.UseMiddleware<EnsureCreatedDatabaseMiddleware>();
+            app.UseSignalR(routes =>
+            {
+                routes.MapHub<SlaveHub>("/slave");
+            });
             app.UseMvc();
         }
     }
