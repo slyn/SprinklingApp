@@ -7,9 +7,11 @@ namespace SprinklingApp.Model.Entities.Concrete
     {
 
         // requested or planned operation info
-        public virtual  DateTime PlannedDate { get; set; }
+        public virtual  DateTime PlannedDateOpen{ get; set; }
+        public virtual  DateTime PlannedDateClose{ get; set; }
 
         // occured operation info
-        public virtual DateTime? OccuredDate { get; set; }
+        public virtual DateTime? OccuredDateOpen { get; set; }
+        public virtual DateTime? OccuredDateClose { get; set; }
     }
 }

@@ -5,7 +5,7 @@ namespace SprinklingApp.Service.Helper
 {
     public static class ExtensionManager
     {
-        private static Days ConvertToDays(this DayOfWeek dayOfWeek)
+        public static Days ConvertToDays(this DayOfWeek dayOfWeek)
         {
             switch (dayOfWeek)
             {
@@ -41,5 +41,6 @@ namespace SprinklingApp.Service.Helper
 
             return days.HasFlag(weekDay);
         }
+
     }
 }

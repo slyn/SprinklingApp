@@ -1,6 +1,6 @@
 ﻿namespace SprinklingApp.Model.Enums
 {
-    public enum Reason
+    public enum OperationTypes
     {
         Default,
         PlannedGroupWork, // planned group work item
