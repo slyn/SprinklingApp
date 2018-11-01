@@ -24,6 +24,11 @@ namespace SprinklingApp.Service.EntityServices.Concrete
             var openCloseOperationItems = _accessor.GetList<OpenCloseOperationItem>(x => x.IsActive);
             return openCloseOperationItems;
         }
+        public IEnumerable<OpenCloseOperationItem> GetListByDate(DateTime date)
+        {
+            var openCloseOperationItems = _accessor.GetList<OpenCloseOperationItem>(x => x.IsActive && x.PlannedDateClose >= date && x.PlannedDateClose.Date == date.Date); // year,month,day are equal
+            return openCloseOperationItems;
+        }
 
         public OpenCloseOperationItem Get(long id)
         {
@@ -58,6 +63,16 @@ namespace SprinklingApp.Service.EntityServices.Concrete
                 ( x.PlannedDateClose <= DateTime.Now && x.OccuredDateClose == default(DateTime?)));
             
             return resultList;
+        }
+        public void GenerateOpenCloseOperationItemListByDay(DateTime date)
+        {
+            // datetime -> day 
+            var today = DateTime.Today.DayOfWeek.ConvertToDays();
+            // profilde o gün olan grupları bul
+
+            // grupların içerdiği vanalar için nesne oluştur
+
+            // oluşturulanları db yaz
         }
 
         //public IEnumerable<OpenCloseOperationItem> GetActivated()
