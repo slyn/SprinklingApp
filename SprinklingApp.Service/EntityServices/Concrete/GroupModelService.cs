@@ -8,6 +8,7 @@ namespace SprinklingApp.Service.EntityServices.Concrete
     public class GroupModelService:BaseModelService, IGroupService
     {
         private readonly DataAccessor _accessor;
+
         public GroupModelService(IRepository repo)
         {
             _accessor = new DataAccessor(repo);

@@ -30,8 +30,10 @@ namespace SprinklingApp.Service.HostedService
                         // try close
                     }
                 }
-
+                // run every minute
                 await Task.Delay(TimeSpan.FromMinutes(1), cToken);
+
+
             }
         }
     }

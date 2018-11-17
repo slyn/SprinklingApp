@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Http.Connections.Features;
-using Microsoft.AspNetCore.Http.Features;
+﻿using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.SignalR;
 using SprinklingApp.Service.Helper;
 using System;
@@ -14,6 +13,7 @@ namespace SprinklingApp.Service.Hubs
         {
             _connectionManager = connectionManager;
         }
+
         public override Task OnConnectedAsync()
         {
             var ipAddress = Context.Features.Get<IHttpConnectionFeature>()?.RemoteIpAdd‌​ress.ToString();
@@ -22,6 +22,7 @@ namespace SprinklingApp.Service.Hubs
 
             return base.OnConnectedAsync();
         }
+
         public override Task OnDisconnectedAsync(Exception exception)
         {
             var ipAddress = Context.Features.Get<IHttpConnectionFeature>()?.RemoteIpAdd‌​ress.ToString();
@@ -29,6 +30,18 @@ namespace SprinklingApp.Service.Hubs
             _connectionManager.RemoveConnection(ipAddress);
 
             return base.OnDisconnectedAsync(exception);
+        }
+
+        public void OpenValve(long valveId)
+        {
+            // map
+            // forward to clienthub sendOpenedValve
+        }
+
+        public void CloseValve(long valveId)
+        {
+            // map 
+            // forward to clienthub sendClosedValve
         }
     }
 }

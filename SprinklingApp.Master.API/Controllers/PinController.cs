@@ -14,6 +14,8 @@ namespace SprinklingApp.Master.API.Controllers
         {
             _valveService = valveService;
         }
+
+
         [HttpGet("Open/{valveId}")]
         public ActionResult Open(long valveId)
         {

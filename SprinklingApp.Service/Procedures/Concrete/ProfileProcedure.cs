@@ -14,12 +14,14 @@ namespace SprinklingApp.Service.Procedures.Concrete
         private readonly IProfileService _profileService;
         private readonly IGroupService _groupService;
         private readonly IProfileGroupMappingService _profileGroupMappingService;
+        private readonly IScheduleManager _scheduleManager;
 
-        public ProfileProcedure(IProfileService profileService, IGroupService groupService, IProfileGroupMappingService profileGroupMappingService)
+        public ProfileProcedure(IProfileService profileService, IGroupService groupService, IProfileGroupMappingService profileGroupMappingService,IScheduleManager scheduleManager)
         {
             _profileService = profileService;
             _groupService = groupService;
             _profileGroupMappingService = profileGroupMappingService;
+            _scheduleManager = scheduleManager;
         }
 
         public ProfileResponseModel Get(long id)
@@ -65,6 +67,8 @@ namespace SprinklingApp.Service.Procedures.Concrete
                     GroupId = group.Id
                 });
             }
+            _scheduleManager.RefreshOpenCloseOperationByDay(); // yeni eklenen profil için hesaplamalar 
+
             var resultModel = ModelBinder.Instance.ConvertToProfileResponseModel(profileItem, groups);
             return resultModel;
         }
@@ -100,6 +104,7 @@ namespace SprinklingApp.Service.Procedures.Concrete
                 }
 
             }
+            _scheduleManager.RefreshOpenCloseOperationByDay(); // güncellenen profil için hesaplamalar 
 
             var resultModel = ModelBinder.Instance.ConvertToProfileResponseModel(profileItem, latesGroups);
             return resultModel;
@@ -108,6 +113,7 @@ namespace SprinklingApp.Service.Procedures.Concrete
         public void Delete(long id)
         {
             _profileService.Delete(id);
+            _scheduleManager.RefreshOpenCloseOperationByDay(); // güncellenen profil için hesaplamalar 
         }
     }
 }

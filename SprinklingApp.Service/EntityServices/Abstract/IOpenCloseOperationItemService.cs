@@ -8,7 +8,7 @@ namespace SprinklingApp.Service.EntityServices.Abstract
     public interface IOpenCloseOperationItemService
     {
         IEnumerable<OpenCloseOperationItem> GetList();
-        IEnumerable<OpenCloseOperationItem> GetListByDate(DateTime date)
+        IEnumerable<OpenCloseOperationItem> GetListByDate(DateTime date);
         OpenCloseOperationItem Get(long id);
         OpenCloseOperationItem Insert(OpenCloseOperationItem entity);
         OpenCloseOperationItem Update(OpenCloseOperationItem entity);
@@ -16,9 +16,11 @@ namespace SprinklingApp.Service.EntityServices.Abstract
 
         IEnumerable<OpenCloseOperationItem> GetItemsForOperation(DateTime date);
 
+        void RefreshOpenCloseOperationItemListByDay(DateTime date);
+
         //IEnumerable<OpenCloseOperationItem> GetActivated();
         //IEnumerable<OpenCloseOperationItem> GetInactivated();
-        
+
         //IEnumerable<OpenCloseOperationItem> GetByValve(long valveId);
 
 

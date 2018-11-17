@@ -42,7 +42,7 @@ namespace SprinklingApp.Service.EntityServices.Concrete
         public void Delete(long id)
         {
             var entity = _accessor.Get<Valve>(x => x.Id == id);
-            var valveGroupMappings = _accessor.GetList<ValveGroupMapping>(x => x.IsActive && x.ValveId == id);
+            var valveGroupMappings = _accessor.GetList<ValveGroupMapping>(x => x.ValveId == id);
             if (valveGroupMappings != null)
             {
                 foreach (var item in valveGroupMappings)
@@ -50,6 +50,8 @@ namespace SprinklingApp.Service.EntityServices.Concrete
                     _accessor.Delete(item);
                 }
             }
+
+            var openCloseOperations = _accessor.GetList<OpenCloseOperationItem>(x => x.IsActive);
             _accessor.Delete(entity);
 
         }

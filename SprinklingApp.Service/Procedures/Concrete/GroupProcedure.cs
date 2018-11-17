@@ -14,12 +14,14 @@ namespace SprinklingApp.Service.Procedures.Concrete
         private readonly IGroupService _groupService;
         private readonly IValveGroupMappingService _valveGroupMappingService;
         private readonly IValveService _valveService;
+        private readonly IScheduleManager _scheduleManager;
 
-        public GroupProcedure(IGroupService groupService, IValveService valveService, IValveGroupMappingService valveGroupMappingService)
+        public GroupProcedure(IGroupService groupService, IValveService valveService, IValveGroupMappingService valveGroupMappingService, IScheduleManager scheduleManager)
         {
             _groupService = groupService;
             _valveService = valveService;
             _valveGroupMappingService = valveGroupMappingService;
+            _scheduleManager = scheduleManager;
         }
 
         public GroupResponseModel Get(long id)
@@ -71,6 +73,9 @@ namespace SprinklingApp.Service.Procedures.Concrete
                     ValveId = valve.Id
                 });
             }
+
+            _scheduleManager.RefreshOpenCloseOperationByDay(); // yeni eklenen grup için hesaplamalar yapılır
+
             var resultModel = ModelBinder.Instance.ConvertToGroupResponseModel(groupItem,valves);
             return resultModel;
         }
@@ -106,6 +111,7 @@ namespace SprinklingApp.Service.Procedures.Concrete
                 }
                 
             }
+            _scheduleManager.RefreshOpenCloseOperationByDay(); // güncellenen grup için hesaplamalar yapılır
 
             var resultModel = ModelBinder.Instance.ConvertToGroupResponseModel(group,latesValves);
             return resultModel;
@@ -121,6 +127,10 @@ namespace SprinklingApp.Service.Procedures.Concrete
             //}
             // delete group
             _groupService.Delete(id);
+
+            // gruba ait vanalar için oluşturulmuş 
+            _scheduleManager.RefreshOpenCloseOperationByDay(); // silinen grup için hesaplamalar yapılır
+
         }
     }
 }

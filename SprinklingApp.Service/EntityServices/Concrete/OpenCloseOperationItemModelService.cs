@@ -13,8 +13,13 @@ namespace SprinklingApp.Service.EntityServices.Concrete
     {
 
         private readonly DataAccessor _accessor;
-        public OpenCloseOperationItemModelService(IRepository repo)
+        private readonly IProfileGroupMappingService _profileGroupMappingService;
+        private readonly IValveGroupMappingService _valveGroupMappingService;
+
+        public OpenCloseOperationItemModelService(IRepository repo, IProfileGroupMappingService profileGroupMappingService, IValveGroupMappingService valveGroupMappingService)
         {
+            _profileGroupMappingService = profileGroupMappingService;
+            _valveGroupMappingService = valveGroupMappingService;
             _accessor = new DataAccessor(repo);
         }
 
@@ -24,6 +29,7 @@ namespace SprinklingApp.Service.EntityServices.Concrete
             var openCloseOperationItems = _accessor.GetList<OpenCloseOperationItem>(x => x.IsActive);
             return openCloseOperationItems;
         }
+
         public IEnumerable<OpenCloseOperationItem> GetListByDate(DateTime date)
         {
             var openCloseOperationItems = _accessor.GetList<OpenCloseOperationItem>(x => x.IsActive && x.PlannedDateClose >= date && x.PlannedDateClose.Date == date.Date); // year,month,day are equal
@@ -64,15 +70,78 @@ namespace SprinklingApp.Service.EntityServices.Concrete
             
             return resultList;
         }
-        public void GenerateOpenCloseOperationItemListByDay(DateTime date)
+
+        public void RefreshOpenCloseOperationItemListByDay(DateTime date)
         {
+            var resultList = new List<OpenCloseOperationItem>();
+
             // datetime -> day 
             var today = DateTime.Today.DayOfWeek.ConvertToDays();
             // profilde o gün olan grupları bul
+            var profileGroupList = _profileGroupMappingService.GetList().Where(x => x.Profile.DayOfWeek.HasFlag(today));
 
             // grupların içerdiği vanalar için nesne oluştur
+            foreach (var mappingItem in profileGroupList)
+            {
+                var valves = _valveGroupMappingService.GetListByGroup(mappingItem.GroupId);
 
-            // oluşturulanları db yaz
+                foreach (var valveMapping in valves)
+                {
+                    var tempItem = new OpenCloseOperationItem()
+                    {
+                        IsActive = true,
+                        OperationType = OperationTypes.PlannedGroupWork,
+                        PlannedDateOpen = new DateTime(DateTime.Today.Year, DateTime.Now.Month, DateTime.Now.Day, mappingItem.Profile.StartHour, mappingItem.Profile.StartMinute, 0),
+                        ValveId = valveMapping.ValveId
+
+                    };
+
+                    switch (mappingItem.Group.Unit)
+                    {
+                        case TimeUnit.Hour:
+                            tempItem.PlannedDateClose = tempItem.PlannedDateOpen.AddHours(mappingItem.Group.Duration);
+                            break;
+                        case TimeUnit.Minute:
+                            tempItem.PlannedDateClose = tempItem.PlannedDateOpen.AddMinutes(mappingItem.Group.Duration);
+                            break;
+                        case TimeUnit.Second:
+                            tempItem.PlannedDateClose = tempItem.PlannedDateOpen.AddSeconds(mappingItem.Group.Duration);
+                            break;
+                        default:
+                            throw new Exception($"Beklenen dışında bir süre birimi ile karşılaşıldı.[{mappingItem.Group.Unit}]");
+                    }
+
+                    resultList.Add(tempItem);
+                }
+            }
+
+            // bugün olup da saat dolayısı ile geçmiş olanları db save or update listesinden sil
+            resultList = resultList.Where(x => x.PlannedDateClose <= DateTime.Now).ToList();
+
+            // oluşturulanları db save or update
+            var existOperations = this.GetListByDate(date); // o gün için oluşturulmuş işlemler
+            var updateCloseNow = existOperations.Where(x => x.OperationType == OperationTypes.PlannedGroupWork && x.OccuredDateClose == null && x.OccuredDateOpen != null).ToList(); // planlamadan dolayı açık olan vanalar kapatılır
+            var deleteNow = existOperations.Where(x => x.OperationType == OperationTypes.PlannedGroupWork && x.OccuredDateClose == null && x.OccuredDateOpen == null).ToList(); // planlanmış ama daha açılmamış vanalar için planan işler silinir
+
+            // close operation - all opened
+            foreach (var operation in updateCloseNow)
+            {
+                operation.PlannedDateClose = DateTime.Now;
+                this.Update(operation);
+            }
+
+            // delete active operations
+            foreach (var item in deleteNow)
+            {
+                this.Delete(item.Id);
+            }
+
+            // save
+            foreach (var newOperation in resultList)
+            {
+                this.Insert(newOperation);
+            }
+
         }
 
         //public IEnumerable<OpenCloseOperationItem> GetActivated()
