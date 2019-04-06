@@ -3,39 +3,32 @@ using SprinklingApp.DataAccess;
 using SprinklingApp.Model.Entities.Concrete;
 using SprinklingApp.Service.EntityServices.Abstract;
 
-namespace SprinklingApp.Service.EntityServices.Concrete
-{
-    public class ProfileModelService : BaseModelService, IProfileService
-    {
+namespace SprinklingApp.Service.EntityServices.Concrete {
+
+    public class ProfileModelService : BaseModelService, IProfileService {
         private readonly DataAccessor _accessor;
-        public ProfileModelService(IRepository repo)
-        {
+
+        public ProfileModelService(IRepository repo) {
             _accessor = new DataAccessor(repo);
         }
 
-        public Profile Get(long id)
-        {
-            var profileItem = _accessor.Get<Profile>(x => x.IsActive && x.Id == id);
+        public Profile Get(long id) {
+            Profile profileItem = _accessor.Get<Profile>(x => x.IsActive && x.Id == id);
             return profileItem;
-           
         }
 
-       
-        public IEnumerable<Profile> GetList()
-        {
-            var profileItems = _accessor.GetList<Profile>(x => x.IsActive);
+
+        public IEnumerable<Profile> GetList() {
+            IEnumerable<Profile> profileItems = _accessor.GetList<Profile>(x => x.IsActive);
             return profileItems;
-            
         }
 
-        public Profile Insert(Profile entity)
-        {
+        public Profile Insert(Profile entity) {
             entity = _accessor.Insert(entity);
             return entity;
         }
 
-        public Profile Update(Profile entity)
-        {
+        public Profile Update(Profile entity) {
             _accessor.Update(entity);
             return entity;
             //var commingIds = dtoItem.Groups.Select(x => x.Id);
@@ -64,16 +57,15 @@ namespace SprinklingApp.Service.EntityServices.Concrete
             //return dtoItem;
         }
 
-        public void Delete(long id)
-        {
-            var entity = _accessor.Get<Profile>(x => x.Id == id);
-            var mappings = _accessor.GetList<ProfileGroupMapping>(x => x.IsActive && x.ProfileId == id);
-            foreach (var item in mappings)
-            {
+        public void Delete(long id) {
+            Profile entity = _accessor.Get<Profile>(x => x.Id == id);
+            IEnumerable<ProfileGroupMapping> mappings = _accessor.GetList<ProfileGroupMapping>(x => x.IsActive && x.ProfileId == id);
+            foreach (ProfileGroupMapping item in mappings) {
                 _accessor.Delete(item);
             }
+
             _accessor.Delete(entity);
-            
         }
     }
+
 }

@@ -1,9 +1,8 @@
 ﻿using SprinklingApp.Model.ApiResponseModels.Abstract;
 
-namespace SprinklingApp.Model.ApiResponseModels.Concrete
-{
-    public class ValveResponseModel : IApiResponse
-    {
+namespace SprinklingApp.Model.ApiResponseModels.Concrete {
+
+    public class ValveResponseModel : IApiResponse {
         public long Id { get; set; }
 
         public virtual int EnablePin { get; set; }
@@ -13,4 +12,5 @@ namespace SprinklingApp.Model.ApiResponseModels.Concrete
 
         public virtual long RaspberryId { get; set; }
     }
+
 }

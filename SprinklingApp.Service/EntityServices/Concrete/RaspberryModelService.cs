@@ -3,37 +3,31 @@ using SprinklingApp.DataAccess;
 using SprinklingApp.Model.Entities.Concrete;
 using SprinklingApp.Service.EntityServices.Abstract;
 
-namespace SprinklingApp.Service.EntityServices.Concrete
-{
-    public class RaspberryModelService : BaseModelService, IRaspberryService
-    {
+namespace SprinklingApp.Service.EntityServices.Concrete {
+
+    public class RaspberryModelService : BaseModelService, IRaspberryService {
         private readonly DataAccessor _accessor;
-        public RaspberryModelService(IRepository repo)
-        {
+
+        public RaspberryModelService(IRepository repo) {
             _accessor = new DataAccessor(repo);
         }
 
-        public Raspberry Get(long id)
-        {
-            var raspberryItem = _accessor.Get<Raspberry>(x => x.IsActive && x.Id == id);
+        public Raspberry Get(long id) {
+            Raspberry raspberryItem = _accessor.Get<Raspberry>(x => x.IsActive && x.Id == id);
             return raspberryItem;
         }
 
-        public IEnumerable<Raspberry> GetList()
-        {
-            var raspberryItems = _accessor.GetList<Raspberry>(x => x.IsActive);
+        public IEnumerable<Raspberry> GetList() {
+            IEnumerable<Raspberry> raspberryItems = _accessor.GetList<Raspberry>(x => x.IsActive);
             return raspberryItems;
-
         }
 
-        public Raspberry Insert(Raspberry entity)
-        {
+        public Raspberry Insert(Raspberry entity) {
             entity = _accessor.Insert(entity);
             return entity;
         }
 
-        public Raspberry Update(Raspberry entity)
-        {
+        public Raspberry Update(Raspberry entity) {
             _accessor.Update(entity);
             return entity;
             //var commingIds = dtoItem.Valves.Select(x => x.Id);
@@ -86,20 +80,18 @@ namespace SprinklingApp.Service.EntityServices.Concrete
             //return dtoItem;
         }
 
-        public void Delete(long id)
-        {
-            var entity = _accessor.Get<Raspberry>(x => x.Id == id);
-            var valves = _accessor.GetList<Valve>(x => x.IsActive && x.RaspberryId == id);
+        public void Delete(long id) {
+            Raspberry entity = _accessor.Get<Raspberry>(x => x.Id == id);
+            IEnumerable<Valve> valves = _accessor.GetList<Valve>(x => x.IsActive && x.RaspberryId == id);
 
-            if (valves != null)
-            {
-                foreach (var item in valves)
-                {
+            if (valves != null) {
+                foreach (Valve item in valves) {
                     _accessor.Delete(item);
                 }
             }
+
             _accessor.Delete(entity);
-           
         }
     }
+
 }

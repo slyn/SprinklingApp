@@ -1,30 +1,21 @@
-﻿using SprinklingApp.Model.ApiRequestModels.Concrete;
+﻿using System;
+using System.Collections.Generic;
+using System.Threading;
+using SprinklingApp.Model.ApiRequestModels.Concrete;
 using SprinklingApp.Model.ApiResponseModels.Concrete;
 using SprinklingApp.Model.Entities.Concrete;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
 
-namespace SprinklingApp.Service.Helper
-{
-    public class ModelBinder
-    {
+namespace SprinklingApp.Service.Helper {
+
+    public class ModelBinder {
         #region [ CTOR ]
-        private ModelBinder()
-        {
-        }
+
+        private ModelBinder() { }
+
         #endregion
 
-        #region [ Lazy-Singleton ]
-        private static readonly Lazy<ModelBinder> _instance = new Lazy<ModelBinder>(() => new ModelBinder(), LazyThreadSafetyMode.ExecutionAndPublication);
-        internal static ModelBinder Instance => _instance.Value;
-        #endregion
-
-        public Group ConvertToGroup(InsertGroupRequestModel requestModel)
-        {
-            var result = new Group()
-            {
+        public Group ConvertToGroup(InsertGroupRequestModel requestModel) {
+            Group result = new Group {
                 IsActive = true,
                 Duration = requestModel.Duration,
                 Name = requestModel.Name,
@@ -33,10 +24,9 @@ namespace SprinklingApp.Service.Helper
 
             return result;
         }
-        public Group ConvertToGroup(UpdateGroupRequestModel requestModel)
-        {
-            var result = new Group()
-            {
+
+        public Group ConvertToGroup(UpdateGroupRequestModel requestModel) {
+            Group result = new Group {
                 Id = requestModel.GroupId,
                 IsActive = true,
                 Duration = requestModel.Duration,
@@ -96,12 +86,12 @@ namespace SprinklingApp.Service.Helper
         //    return result;
 
         //}
-        public GroupResponseModel ConvertToGroupResponseModel(Group entity,IEnumerable<Valve> valves)
-        {
-            if (entity == null)
+        public GroupResponseModel ConvertToGroupResponseModel(Group entity, IEnumerable<Valve> valves) {
+            if (entity == null) {
                 return null;
-            var result = new GroupResponseModel()
-            {
+            }
+
+            GroupResponseModel result = new GroupResponseModel {
                 Id = entity.Id,
                 Duration = entity.Duration,
                 Name = entity.Name,
@@ -143,10 +133,8 @@ namespace SprinklingApp.Service.Helper
 
         //    return result;
         //}
-        public Valve ConvertToValve(InsertValveRequestModel requestModel)
-        {
-            var result = new Valve()
-            {
+        public Valve ConvertToValve(InsertValveRequestModel requestModel) {
+            Valve result = new Valve {
                 IsActive = true,
                 Name = requestModel.Name,
                 EnablePin = requestModel.EnablePin,
@@ -156,30 +144,28 @@ namespace SprinklingApp.Service.Helper
             };
 
             return result;
-
         }
-        public Valve ConvertToValve(UpdateValveRequestModel requestModel)
-        {
-            var result = new Valve()
-            {
+
+        public Valve ConvertToValve(UpdateValveRequestModel requestModel) {
+            Valve result = new Valve {
                 Id = requestModel.ValveId,
                 EnablePin = requestModel.EnablePin,
                 DisablePin = requestModel.DisablePin,
                 IsActive = true,
                 Name = requestModel.Name,
                 Pressure = requestModel.Pressure,
-                RaspberryId =requestModel.RaspberryId
+                RaspberryId = requestModel.RaspberryId
             };
 
             return result;
         }
-        public ValveResponseModel ConvertToValveResponseModel(Valve dtoItem)
-        {
-            if (dtoItem == null)
-                return null;
 
-            var result = new ValveResponseModel()
-            {
+        public ValveResponseModel ConvertToValveResponseModel(Valve dtoItem) {
+            if (dtoItem == null) {
+                return null;
+            }
+
+            ValveResponseModel result = new ValveResponseModel {
                 Id = dtoItem.Id,
                 Name = dtoItem.Name,
                 Pressure = dtoItem.Pressure,
@@ -191,10 +177,8 @@ namespace SprinklingApp.Service.Helper
             return result;
         }
 
-        public Raspberry ConvertToRaspberry(Raspberry dtoItem)
-        {
-            var result = new Raspberry()
-            {
+        public Raspberry ConvertToRaspberry(Raspberry dtoItem) {
+            Raspberry result = new Raspberry {
                 Id = dtoItem.Id,
                 IsActive = dtoItem.IsActive,
                 Name = dtoItem.Name,
@@ -204,7 +188,7 @@ namespace SprinklingApp.Service.Helper
 
             return result;
         }
-        
+
         //public Raspberry ConvertToRaspberryDTO(Raspberry entity, IEnumerable<Valve> valves)
         //{
         //    if (entity == null)
@@ -222,10 +206,8 @@ namespace SprinklingApp.Service.Helper
         //    return result;
         //}
 
-        public Raspberry ConvertToRaspberry(InsertRaspberryRequestModel requestModel,IEnumerable<Valve> valves)
-        {
-            var result = new Raspberry()
-            {
+        public Raspberry ConvertToRaspberry(InsertRaspberryRequestModel requestModel, IEnumerable<Valve> valves) {
+            Raspberry result = new Raspberry {
                 IsActive = true,
                 Name = requestModel.Name,
                 IPAddress = requestModel.IPAddress,
@@ -233,12 +215,10 @@ namespace SprinklingApp.Service.Helper
             };
 
             return result;
-
         }
-        public Raspberry ConvertToRaspberry(UpdateRaspberryRequestModel requestModel, IEnumerable<Valve> valves)
-        {
-            var result = new Raspberry()
-            {
+
+        public Raspberry ConvertToRaspberry(UpdateRaspberryRequestModel requestModel, IEnumerable<Valve> valves) {
+            Raspberry result = new Raspberry {
                 Id = requestModel.RaspberryId,
                 IsActive = true,
                 Name = requestModel.Name,
@@ -248,12 +228,13 @@ namespace SprinklingApp.Service.Helper
 
             return result;
         }
-        public RaspberryResponseModel ConvertToRaspberryResponseModel(Raspberry dtoItem)
-        {
-            if (dtoItem == null)
+
+        public RaspberryResponseModel ConvertToRaspberryResponseModel(Raspberry dtoItem) {
+            if (dtoItem == null) {
                 return null;
-            var result = new RaspberryResponseModel()
-            {
+            }
+
+            RaspberryResponseModel result = new RaspberryResponseModel {
                 Id = dtoItem.Id,
                 Name = dtoItem.Name,
                 IPAddress = dtoItem.IPAddress,
@@ -263,10 +244,8 @@ namespace SprinklingApp.Service.Helper
             return result;
         }
 
-        public Profile ConvertToProfile(Profile dtoItem)
-        {
-            var result = new Profile()
-            {
+        public Profile ConvertToProfile(Profile dtoItem) {
+            Profile result = new Profile {
                 Id = dtoItem.Id,
                 IsActive = dtoItem.IsActive,
                 Name = dtoItem.Name,
@@ -295,10 +274,8 @@ namespace SprinklingApp.Service.Helper
 
         //    return result;
         //}
-        public Profile ConvertToProfile(InsertProfileRequestModel requestModel)
-        {
-            var result = new Profile()
-            {
+        public Profile ConvertToProfile(InsertProfileRequestModel requestModel) {
+            Profile result = new Profile {
                 //Id =
                 IsActive = true,
                 Name = requestModel.Name,
@@ -306,30 +283,29 @@ namespace SprinklingApp.Service.Helper
                 StartHour = requestModel.StartHour,
                 StartMinute = requestModel.StartMinute
             };
-            
-            return result;
 
+            return result;
         }
-        public Profile ConvertToProfile(UpdateProfileRequestModel requestModel)
-        {
-            var result = new Profile()
-            {
+
+        public Profile ConvertToProfile(UpdateProfileRequestModel requestModel) {
+            Profile result = new Profile {
                 Id = requestModel.ProfileId,
                 IsActive = true,
                 Name = requestModel.Name,
                 DayOfWeek = requestModel.DayOfWeek,
                 StartHour = requestModel.StartHour,
-                StartMinute = requestModel.StartMinute                
+                StartMinute = requestModel.StartMinute
             };
 
             return result;
         }
-        public ProfileResponseModel ConvertToProfileResponseModel(Profile item, IEnumerable<Group> groups)
-        {
-            if (item == null)
+
+        public ProfileResponseModel ConvertToProfileResponseModel(Profile item, IEnumerable<Group> groups) {
+            if (item == null) {
                 return null;
-            var result = new ProfileResponseModel()
-            {
+            }
+
+            ProfileResponseModel result = new ProfileResponseModel {
                 Id = item.Id,
                 Name = item.Name,
                 DayOfWeek = item.DayOfWeek,
@@ -341,5 +317,12 @@ namespace SprinklingApp.Service.Helper
             return result;
         }
 
+        #region [ Lazy-Singleton ]
+
+        private static readonly Lazy<ModelBinder> _instance = new Lazy<ModelBinder>(() => new ModelBinder(), LazyThreadSafetyMode.ExecutionAndPublication);
+        internal static ModelBinder Instance => _instance.Value;
+
+        #endregion
     }
+
 }

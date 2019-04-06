@@ -1,12 +1,11 @@
-﻿using SprinklingApp.Model.ApiResponseModels.Abstract;
+﻿using System.Collections.Generic;
+using SprinklingApp.Model.ApiResponseModels.Abstract;
 using SprinklingApp.Model.Entities.Concrete;
 using SprinklingApp.Model.Enums;
-using System.Collections.Generic;
 
-namespace SprinklingApp.Model.ApiResponseModels.Concrete
-{
-    public class ProfileResponseModel : IApiResponse
-    {
+namespace SprinklingApp.Model.ApiResponseModels.Concrete {
+
+    public class ProfileResponseModel : IApiResponse {
         public long Id { get; set; }
 
         public virtual string Name { get; set; }
@@ -16,4 +15,5 @@ namespace SprinklingApp.Model.ApiResponseModels.Concrete
 
         public virtual IEnumerable<Group> Groups { get; set; }
     }
+
 }

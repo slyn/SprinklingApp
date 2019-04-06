@@ -1,10 +1,9 @@
-﻿using SprinklingApp.Model.Entities.Concrete;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using SprinklingApp.Model.Entities.Concrete;
 
-namespace SprinklingApp.Service.EntityServices.Abstract
-{
-    public interface IProfileGroupMappingService
-    {
+namespace SprinklingApp.Service.EntityServices.Abstract {
+
+    public interface IProfileGroupMappingService {
         ProfileGroupMapping Get(long id);
         IEnumerable<ProfileGroupMapping> GetList();
         IEnumerable<ProfileGroupMapping> GetListByGroup(long groupid);
@@ -13,4 +12,5 @@ namespace SprinklingApp.Service.EntityServices.Abstract
         ProfileGroupMapping Update(ProfileGroupMapping entity);
         void Delete(long id);
     }
+
 }

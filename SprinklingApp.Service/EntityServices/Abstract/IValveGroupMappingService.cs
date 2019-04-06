@@ -1,10 +1,9 @@
-﻿using SprinklingApp.Model.Entities.Concrete;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using SprinklingApp.Model.Entities.Concrete;
 
-namespace SprinklingApp.Service.EntityServices.Abstract
-{
-    public interface IValveGroupMappingService
-    {
+namespace SprinklingApp.Service.EntityServices.Abstract {
+
+    public interface IValveGroupMappingService {
         ValveGroupMapping Get(long id);
         IEnumerable<ValveGroupMapping> GetList();
         IEnumerable<ValveGroupMapping> GetListByGroup(long groupid);
@@ -13,4 +12,5 @@ namespace SprinklingApp.Service.EntityServices.Abstract
         ValveGroupMapping Update(ValveGroupMapping entity);
         void Delete(long id);
     }
+
 }

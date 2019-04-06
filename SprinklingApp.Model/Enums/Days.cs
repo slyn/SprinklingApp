@@ -1,10 +1,9 @@
-﻿namespace SprinklingApp.Model.Enums
-{
+﻿namespace SprinklingApp.Model.Enums {
+
     /// <summary>
-    /// 7 days of week
+    ///     7 days of week
     /// </summary>
-    public enum Days
-    {
+    public enum Days {
         Default = 0,
         Monday = 1 << 0,
         Tuesday = 1 << 1,
@@ -14,4 +13,5 @@
         Saturday = 1 << 5,
         Sunday = 1 << 6
     }
+
 }

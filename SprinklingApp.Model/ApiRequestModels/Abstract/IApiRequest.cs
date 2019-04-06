@@ -1,6 +1,5 @@
-﻿namespace SprinklingApp.Model.ApiRequestModels.Abstract
-{
-    public interface IApiRequest
-    {
-    }
+﻿namespace SprinklingApp.Model.ApiRequestModels.Abstract {
+
+    public interface IApiRequest { }
+
 }

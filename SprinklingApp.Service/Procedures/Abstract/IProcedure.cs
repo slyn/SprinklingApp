@@ -1,6 +1,5 @@
-﻿namespace SprinklingApp.Service.Procedures.Abstract
-{
-    public interface IProcedure
-    {
-    }
+﻿namespace SprinklingApp.Service.Procedures.Abstract {
+
+    public interface IProcedure { }
+
 }

@@ -1,10 +1,9 @@
-﻿using SprinklingApp.Model.Entities.Abstract;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using SprinklingApp.Model.Entities.Abstract;
 
-namespace SprinklingApp.Model.Entities.Concrete
-{
-    public class Valve : BaseEntity
-    {
+namespace SprinklingApp.Model.Entities.Concrete {
+
+    public class Valve : BaseEntity {
         public virtual int EnablePin { get; set; }
         public virtual int DisablePin { get; set; }
         public virtual float Pressure { get; set; }
@@ -15,4 +14,5 @@ namespace SprinklingApp.Model.Entities.Concrete
 
         public virtual Raspberry Raspberry { get; set; }
     }
+
 }
