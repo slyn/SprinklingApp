@@ -5,10 +5,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using SprinklingApp.DataAccess.ORM.EFCore;
 using SprinklingApp.Model.ApiResponseModels.Concrete;
 using SprinklingApp.Model.Entities.Concrete;
-using SprinklingApp.Service.EntityServices.Abstract;
 using SprinklingApp.Service.Procedures.Abstract;
 
 namespace SprinklingApp.Master.API.Controllers {
@@ -18,59 +16,71 @@ namespace SprinklingApp.Master.API.Controllers {
 
         public PinControlBackgroundService(IServiceScopeFactory scopeFactory) {
             this.scopeFactory = scopeFactory;
-            //this.context = context;
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken) {
 
             using (IServiceScope scope = scopeFactory.CreateScope()) {
-                var valveService = scope.ServiceProvider.GetRequiredService<IValveProcedure>();
+                //var valveService = scope.ServiceProvider.GetRequiredService<IValveProcedure>();
                 var profileService = scope.ServiceProvider.GetRequiredService<IProfileProcedure>();
                 var groupService = scope.ServiceProvider.GetRequiredService<IGroupProcedure>();
                 var pinController = scope.ServiceProvider.GetRequiredService<PinController>();
+                var settingsController = scope.ServiceProvider.GetRequiredService<MainController>();
+
                 while (!stoppingToken.IsCancellationRequested) {
                     //todo check for is whole system is active
                     //if not, turn off all open valves
-                    var profiles = profileService.GetList().ToList();
-                    var valves = valveService.GetList().ToList();
-                    var groups = groupService.GetList().ToList();
 
-                    List<ProfileResponseModel> todaysProfiles = GetTodaysProfiles(profiles);
-                    IOrderedEnumerable<ProfileResponseModel> orderedTodaysProfiles = todaysProfiles.OrderBy(o => o.StartHour).ThenBy(o => o.StartMinute);
-                    foreach (ProfileResponseModel profile in orderedTodaysProfiles) {
-                        DateTime profileEndTime = GetProfileEndTime(profile);
+                    var settings = settingsController.Get().Value;
+                    
+                    if (settings.IsStarted) {
+                        var profiles = profileService.GetList().ToList();
 
-                        /*check for is active
+                        List<ProfileResponseModel> todaysProfiles = GetTodaysProfiles(profiles);
+                        IOrderedEnumerable<ProfileResponseModel> orderedTodaysProfiles = todaysProfiles.OrderBy(o => o.StartHour).ThenBy(o => o.StartMinute);
+                        foreach (ProfileResponseModel profile in orderedTodaysProfiles)
+                        {
+                            DateTime profileEndTime = GetProfileEndTime(profile);
 
-                        get today's profiles+
-                            order by starting hour/minute+
-                            add groups working time by one by
-                            if it is smaller
-                                keep adding
-                            else
-                                open groups valves
-                                turn off other open valves
-                                */
+                            /*check for is active
 
-                        if (DateTime.Now.CompareTo(profileEndTime) >= 0) {
-                            continue;
-                        }
+                            get today's profiles+
+                                order by starting hour/minute+
+                                add groups working time by one by
+                                if it is smaller
+                                    keep adding
+                                else
+                                    open groups valves
+                                    turn off other open valves
+                                    */
 
-                        List<Group> profileGroups = profile.Groups.ToList();
-                        int leftMinutes = DateTime.Now.Hour * 60 + DateTime.Now.Minute - profile.StartHour * 60 - profile.StartMinute;
-                        for (int i = profileGroups.Count - 1; i >= 0; i--) {
-                            var g = groupService.Get(profileGroups[i].Id);
-                            if (leftMinutes < profileGroups[i].Duration) {
-                                foreach (Valve valve in g.Valves) {
-                                    pinController.Open(valve.Id);
+                            if (DateTime.Now.CompareTo(profileEndTime) >= 0)
+                            {
+                                continue;
+                            }
+
+                            List<Group> profileGroups = profile.Groups.ToList();
+                            int leftMinutes = DateTime.Now.Hour * 60 + DateTime.Now.Minute - profile.StartHour * 60 - profile.StartMinute;
+                            for (int i = profileGroups.Count - 1; i >= 0; i--)
+                            {
+                                var g = groupService.Get(profileGroups[i].Id);
+                                if (leftMinutes < profileGroups[i].Duration)
+                                {
+                                    foreach (Valve valve in g.Valves)
+                                    {
+                                        pinController.Open(valve.Id);
+                                    }
                                 }
-                            } else {
-                                foreach (Valve valve in g.Valves) {
-                                    pinController.Close(valve.Id);
+                                else
+                                {
+                                    foreach (Valve valve in g.Valves)
+                                    {
+                                        pinController.Close(valve.Id);
+                                    }
                                 }
                             }
-                        }
 
+                        }
                     }
 
                     await Task.Delay(1000 * 60, stoppingToken);
