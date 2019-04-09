@@ -5,14 +5,17 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using Microsoft.Extensions.Hosting;
 using Newtonsoft.Json.Serialization;
 using SprinklingApp.DataAccess;
 using SprinklingApp.DataAccess.ORM.EFCore;
+using SprinklingApp.Master.API.Controllers;
 using SprinklingApp.Master.API.Middlewares;
 using SprinklingApp.Service.EntityServices.Abstract;
 using SprinklingApp.Service.EntityServices.Concrete;
 using SprinklingApp.Service.Procedures.Abstract;
 using SprinklingApp.Service.Procedures.Concrete;
+using IHostingEnvironment = Microsoft.AspNetCore.Hosting.IHostingEnvironment;
 
 namespace SprinklingApp.Master.API {
 
@@ -40,6 +43,8 @@ namespace SprinklingApp.Master.API {
             //var currentFolder = Path.GetDirectoryName(codeBase);
             //services.TryAddScoped<IRepository>( x => new FileRepository<JsonSerialization>(currentFolder));
 
+
+
             #region [ EntityService ]
 
             services.TryAddScoped<IGroupService, GroupModelService>();
@@ -59,6 +64,13 @@ namespace SprinklingApp.Master.API {
             services.TryAddScoped<IRaspberryProcedure, RaspberryProcedure>();
 
             #endregion
+
+            #region [Background Services]
+
+            services.AddSingleton<IHostedService, PinControlBackgroundService>();
+
+            #endregion
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

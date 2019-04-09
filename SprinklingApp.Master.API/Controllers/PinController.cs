@@ -11,23 +11,25 @@ namespace SprinklingApp.Master.API.Controllers {
     [Route(Routes.Pin)]
     public class PinController : BaseMasterController {
         private readonly IValveService _valveService;
+        private readonly IRaspberryService raspberryService;
 
-        public PinController(IValveService valveService) {
+        public PinController(IValveService valveService, IRaspberryService raspberryService) {
             _valveService = valveService;
+            this.raspberryService = raspberryService;
         }
 
         [HttpGet("Open/{valveId}")]
         public ActionResult Open(long valveId) {
             Valve valveDto = _valveService.Get(valveId);
-
-            string ip = valveDto?.Raspberry?.IPAddress;
+            Raspberry raspberry = raspberryService.Get(valveDto.RaspberryId);
+            string ip = raspberry.IPAddress;
             if (string.IsNullOrWhiteSpace(ip)) {
                 throw new Exception(" IP address of Valve can not found!");
             }
 
             string url = "http://" + ip + "/api/Open/" + valveDto.EnablePin;
 
-            valveDto.IsActive = true;
+            valveDto.IsOpen = true;
             _valveService.Update(valveDto);
 
             Get(url);
@@ -37,13 +39,13 @@ namespace SprinklingApp.Master.API.Controllers {
         [HttpGet("Close/{valveId}")]
         public ActionResult Close(long valveId) {
             Valve valveDto = _valveService.Get(valveId);
-
-            string ip = valveDto?.Raspberry?.IPAddress;
+            Raspberry raspberry = raspberryService.Get(valveDto.RaspberryId);
+            string ip = raspberry.IPAddress;
             if (string.IsNullOrWhiteSpace(ip)) {
                 throw new Exception("IP address of Valve  can not found!");
             }
 
-            valveDto.IsActive = false;
+            valveDto.IsOpen = false;
             _valveService.Update(valveDto);
 
             string url = "http://" + ip + "/api/Close/" + valveDto.DisablePin;

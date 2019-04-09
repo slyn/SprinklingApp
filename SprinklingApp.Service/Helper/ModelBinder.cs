@@ -138,6 +138,7 @@ namespace SprinklingApp.Service.Helper {
                 IsActive = true,
                 Name = requestModel.Name,
                 EnablePin = requestModel.EnablePin,
+                IsOpen = requestModel.IsOpen,
                 DisablePin = requestModel.DisablePin,
                 Pressure = requestModel.Pressure,
                 RaspberryId = requestModel.RaspberryId
@@ -152,6 +153,7 @@ namespace SprinklingApp.Service.Helper {
                 EnablePin = requestModel.EnablePin,
                 DisablePin = requestModel.DisablePin,
                 IsActive = true,
+                IsOpen = requestModel.IsOpen,
                 Name = requestModel.Name,
                 Pressure = requestModel.Pressure,
                 RaspberryId = requestModel.RaspberryId
@@ -168,6 +170,8 @@ namespace SprinklingApp.Service.Helper {
             ValveResponseModel result = new ValveResponseModel {
                 Id = dtoItem.Id,
                 Name = dtoItem.Name,
+                IsOpen = dtoItem.IsOpen,
+                IsActive = dtoItem.IsActive,
                 Pressure = dtoItem.Pressure,
                 EnablePin = dtoItem.EnablePin,
                 DisablePin = dtoItem.DisablePin,

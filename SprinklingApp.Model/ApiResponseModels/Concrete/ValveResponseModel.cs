@@ -9,7 +9,8 @@ namespace SprinklingApp.Model.ApiResponseModels.Concrete {
         public virtual int DisablePin { get; set; }
         public virtual float Pressure { get; set; }
         public virtual string Name { get; set; }
-
+        public virtual bool IsOpen { get; set; }
+        public virtual bool IsActive { get; set; }
         public virtual long RaspberryId { get; set; }
     }
 

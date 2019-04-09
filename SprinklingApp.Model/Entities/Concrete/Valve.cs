@@ -8,6 +8,7 @@ namespace SprinklingApp.Model.Entities.Concrete {
         public virtual int DisablePin { get; set; }
         public virtual float Pressure { get; set; }
         public virtual string Name { get; set; }
+        public virtual bool IsOpen { get;set; }
 
         [ForeignKey("Raspberry")]
         public virtual long RaspberryId { get; set; }
