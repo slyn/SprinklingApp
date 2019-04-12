@@ -26,8 +26,8 @@ namespace SprinklingApp.Master.API.Controllers {
             if (string.IsNullOrWhiteSpace(ip)) {
                 throw new Exception(" IP address of Valve can not found!");
             }
-
-            string url = "http://" + ip + "/api/Open/" + valveDto.EnablePin;
+            
+            string url = $"http://{ip}/{valveDto.EnablePin}";
 
             valveDto.IsOpen = true;
             _valveService.Update(valveDto);
@@ -48,7 +48,7 @@ namespace SprinklingApp.Master.API.Controllers {
             valveDto.IsOpen = false;
             _valveService.Update(valveDto);
 
-            string url = "http://" + ip + "/api/Close/" + valveDto.DisablePin;
+            string url = $"http://{ip}/{valveDto.DisablePin}";
 
             Get(url);
             return Ok(200);
