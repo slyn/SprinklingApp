@@ -67,7 +67,7 @@ namespace SprinklingApp.Common.FileOperator {
                 }
             }
 
-            StreamWriter streamWriter = new StreamWriter(path, fileWriteOptions.OverwriteFileIfExists);
+            StreamWriter streamWriter = new StreamWriter(path, !fileWriteOptions.OverwriteFileIfExists);
             streamWriter.WriteLine(data);
             streamWriter.Close();
         }

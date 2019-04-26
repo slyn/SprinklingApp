@@ -28,7 +28,9 @@ namespace SprinklingApp.Master.API.Controllers {
             }
             
             string url = $"http://{ip}/{valveDto.EnablePin}";
-
+            Console.ForegroundColor = ConsoleColor.Blue;
+            Console.WriteLine($"\n\n\n\n{raspberry.IPAddress} valve:{valveDto.RaspberryId} opening\n{url}\n\n\n");
+            Console.ForegroundColor = ConsoleColor.White;
             valveDto.IsOpen = true;
             _valveService.Update(valveDto);
 
@@ -49,7 +51,9 @@ namespace SprinklingApp.Master.API.Controllers {
             _valveService.Update(valveDto);
 
             string url = $"http://{ip}/{valveDto.DisablePin}";
-
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine($"\n\n\n\n{raspberry.IPAddress} valve:{valveDto.RaspberryId} closing\n{url}\n\n\n");
+            Console.ForegroundColor = ConsoleColor.White;
             Get(url);
             return Ok(200);
         }

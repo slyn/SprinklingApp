@@ -253,7 +253,13 @@ namespace SprinklingApp.Service.Helper {
                 Id = dtoItem.Id,
                 IsActive = dtoItem.IsActive,
                 Name = dtoItem.Name,
-                DayOfWeek = dtoItem.DayOfWeek,
+                Monday =  dtoItem.Monday,
+                Tuesday =  dtoItem.Tuesday,
+                Wednesday =  dtoItem.Wednesday,
+                Thursday =  dtoItem.Thursday,
+                Friday =  dtoItem.Friday,
+                Saturday =  dtoItem.Saturday,
+                Sunday =  dtoItem.Sunday,
                 StartHour = dtoItem.StartHour,
                 StartMinute = dtoItem.StartMinute
             };
@@ -283,7 +289,13 @@ namespace SprinklingApp.Service.Helper {
                 //Id =
                 IsActive = true,
                 Name = requestModel.Name,
-                DayOfWeek = requestModel.DayOfWeek,
+                Monday = requestModel.Monday,
+                Tuesday = requestModel.Tuesday,
+                Wednesday = requestModel.Wednesday,
+                Thursday = requestModel.Thursday,
+                Friday = requestModel.Friday,
+                Saturday = requestModel.Saturday,
+                Sunday = requestModel.Sunday,
                 StartHour = requestModel.StartHour,
                 StartMinute = requestModel.StartMinute
             };
@@ -296,7 +308,13 @@ namespace SprinklingApp.Service.Helper {
                 Id = requestModel.ProfileId,
                 IsActive = true,
                 Name = requestModel.Name,
-                DayOfWeek = requestModel.DayOfWeek,
+                Monday = requestModel.Monday,
+                Tuesday = requestModel.Tuesday,
+                Wednesday = requestModel.Wednesday,
+                Thursday = requestModel.Thursday,
+                Friday = requestModel.Friday,
+                Saturday = requestModel.Saturday,
+                Sunday = requestModel.Sunday,
                 StartHour = requestModel.StartHour,
                 StartMinute = requestModel.StartMinute
             };
@@ -312,7 +330,13 @@ namespace SprinklingApp.Service.Helper {
             ProfileResponseModel result = new ProfileResponseModel {
                 Id = item.Id,
                 Name = item.Name,
-                DayOfWeek = item.DayOfWeek,
+                Monday = item.Monday,
+                Tuesday = item.Tuesday,
+                Wednesday = item.Wednesday,
+                Thursday = item.Thursday,
+                Friday = item.Friday,
+                Saturday = item.Saturday,
+                Sunday = item.Sunday,
                 StartHour = item.StartHour,
                 StartMinute = item.StartMinute,
                 Groups = groups
