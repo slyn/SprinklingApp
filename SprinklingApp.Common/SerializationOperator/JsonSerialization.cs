@@ -1,27 +1,23 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
+using Newtonsoft.Json;
 
-namespace SprinklingApp.Common.SerializationOperator
-{
-    public class JsonSerialization: ISerialization
-    {
-        public object Serialize(object data)
-        {
-            var returnStr = JsonConvert.SerializeObject(data);
-            return returnStr.ToString();
+namespace SprinklingApp.Common.SerializationOperator {
+
+    public class JsonSerialization : ISerialization {
+        public object Serialize(object data) {
+            string returnStr = JsonConvert.SerializeObject(data);
+            return returnStr;
         }
 
-        public object Deserialize<T>(object data)
-        {
-            var result = JsonConvert.DeserializeObject<T>(data.ToString());
+        public object Deserialize<T>(object data) {
+            T result = JsonConvert.DeserializeObject<T>(data.ToString());
             return result;
         }
 
-        public object Deserialize(Type type, object data)
-        {
-            var result = JsonConvert.DeserializeObject(data.ToString(), type);
+        public object Deserialize(Type type, object data) {
+            object result = JsonConvert.DeserializeObject(data.ToString(), type);
             return result;
-
         }
     }
+
 }

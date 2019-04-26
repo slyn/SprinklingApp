@@ -1,14 +1,15 @@
-﻿using SprinklingApp.Model.DTOs.Concrete;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using SprinklingApp.Model.Entities.Concrete;
 
-namespace SprinklingApp.Service.EntityServices.Abstract
-{
-    public interface IGroupService
-    {
-        GroupDTO Get(long id);
-        IEnumerable<GroupDTO> GetList();
-        GroupDTO Insert(GroupDTO dtoItem);
-        GroupDTO Update(GroupDTO dtoItem);
+namespace SprinklingApp.Service.EntityServices.Abstract {
+
+    public interface IGroupService {
+        Group Get(long id);
+        IEnumerable<Group> GetList();
+        IEnumerable<Group> GetListByIds(IList<long> ids);
+        Group Insert(Group entity);
+        Group Update(Group entity);
         void Delete(long id);
     }
+
 }

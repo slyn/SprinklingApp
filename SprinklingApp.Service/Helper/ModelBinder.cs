@@ -1,49 +1,98 @@
-﻿using SprinklingApp.Model.ApiRequestModels.Concrete;
-using SprinklingApp.Model.ApiResponseModels.Concrete;
-using SprinklingApp.Model.DTOs.Concrete;
-using SprinklingApp.Model.Entities.Concrete;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
+using SprinklingApp.Model.ApiRequestModels.Concrete;
+using SprinklingApp.Model.ApiResponseModels.Concrete;
+using SprinklingApp.Model.Entities.Concrete;
 
-namespace SprinklingApp.Service.Helper
-{
-    public class ModelBinder
-    {
+namespace SprinklingApp.Service.Helper {
+
+    public class ModelBinder {
         #region [ CTOR ]
-        private ModelBinder()
-        {
-        }
+
+        private ModelBinder() { }
+
         #endregion
 
-        #region [ Lazy-Singleton ]
-        private static readonly Lazy<ModelBinder> _instance = new Lazy<ModelBinder>(() => new ModelBinder(), LazyThreadSafetyMode.ExecutionAndPublication);
-        internal static ModelBinder Instance => _instance.Value;
-        #endregion
-
-        public Group ConvertToGroup(GroupDTO dtoItem)
-        {
-            var result = new Group()
-            {
-                Id = dtoItem.Id,
-                IsActive = dtoItem.IsActive,
-                Duration = dtoItem.Duration,
-                Name = dtoItem.Name,
-                Unit = dtoItem.Unit
-                
+        public Group ConvertToGroup(InsertGroupRequestModel requestModel) {
+            Group result = new Group {
+                IsActive = true,
+                Duration = requestModel.Duration,
+                Name = requestModel.Name,
+                Unit = requestModel.Unit
             };
 
             return result;
         }
-        public GroupDTO ConvertToGroupDTO(Group entity, IEnumerable<Valve> valves)
-        {
-            if (entity == null)
+
+        public Group ConvertToGroup(UpdateGroupRequestModel requestModel) {
+            Group result = new Group {
+                Id = requestModel.GroupId,
+                IsActive = true,
+                Duration = requestModel.Duration,
+                Name = requestModel.Name,
+                Unit = requestModel.Unit
+            };
+
+            return result;
+        }
+        //public GroupDTO ConvertToGroupDTO(Group entity, IEnumerable<Valve> valves)
+        //public GroupDTO ConvertToGroupDTO(Group entity, IEnumerable<ValveDTO> valves)
+        //{
+        //    if (entity == null)
+        //        return null;
+        //    var result = new GroupDTO()
+        //    {
+        //        Id = entity.Id,
+        //        IsActive = entity.IsActive,
+        //        Duration = entity.Duration,
+        //        Name = entity.Name,
+        //        Unit = entity.Unit,
+        //        Valves = valves
+        //    };
+
+        //    return result;
+        //}
+        //public GroupDTO ConvertToGroupDTO(InsertGroupRequestModel requestModel,IEnumerable<ValveDTO> valves)
+        //{
+        //    var result = new GroupDTO()
+        //    {
+        //        IsActive = true,
+        //        Duration = requestModel.Duration,
+        //        Name = requestModel.Name,
+        //        Unit = requestModel.Unit,
+        //        Valves = valves
+        //        //Valves =valves.Select(x=>ConvertToValve(x))
+        //    };
+
+        //    return result;
+
+        //}
+        //public GroupDTO ConvertToGroupDTO(UpdateGroupRequestModel requestModel, IEnumerable<ValveDTO> valves)
+        //{
+        //    var result = new GroupDTO()
+        //    {
+        //        Id = requestModel.GroupId,
+        //        IsActive = true,
+        //        Duration = requestModel.Duration,
+        //        Name = requestModel.Name,
+        //        Unit = requestModel.Unit,
+        //        Valves = valves
+        //        //Valves = requestModel.ValveIdList != null ? 
+        //        //                    valves.Where(x => x.IsActive && requestModel.ValveIdList.Contains(x.Id)).Select(x => ConvertToValve(x)) : 
+        //        //                    new List<Valve>()
+        //    };
+
+        //    return result;
+
+        //}
+        public GroupResponseModel ConvertToGroupResponseModel(Group entity, IEnumerable<Valve> valves) {
+            if (entity == null) {
                 return null;
-            var result = new GroupDTO()
-            {
+            }
+
+            GroupResponseModel result = new GroupResponseModel {
                 Id = entity.Id,
-                IsActive = entity.IsActive,
                 Duration = entity.Duration,
                 Name = entity.Name,
                 Unit = entity.Unit,
@@ -52,129 +101,88 @@ namespace SprinklingApp.Service.Helper
 
             return result;
         }
-        public GroupDTO ConvertToGroupDTO(InsertGroupRequestModel requestModel,IEnumerable<ValveDTO> valves)
-        {
-            var result = new GroupDTO()
-            {
-                IsActive = true,
-                Duration = requestModel.Duration,
-                Name = requestModel.Name,
-                Unit = requestModel.Unit,
-                Valves =valves.Select(x=>ConvertToValve(x))
-            };
 
-            return result;
+        //public Valve ConvertToValve(ValveDTO dtoItem)
+        //{
+        //    var result = new Valve()
+        //    {
+        //        Id = dtoItem.Id,
+        //        IsActive = dtoItem.IsActive,
+        //        Name = dtoItem.Name,
+        //        ActivatePin = dtoItem.ActivatePin,
+        //        DisabledPin = dtoItem.DisabledPin,
+        //        Pressure = dtoItem.Pressure,
+        //        RaspberryId = dtoItem.RaspberryId
+        //    };
 
-        }
-        public GroupDTO ConvertToGroupDTO(UpdateGroupRequestModel requestModel)
-        {
-            var result = new GroupDTO()
-            {
-                Id = requestModel.GroupId,
-                IsActive = true,
-                Duration = requestModel.Duration,
-                Name = requestModel.Name,
-                Unit = requestModel.Unit,
-                //ValveList = requestModel.ValveList // TODO :: Get Valve List
-            };
+        //    return result;
+        //}
+        //public ValveDTO ConvertToValveDTO(Valve entity, Raspberry raspberry)
+        //{
+        //    var result = new ValveDTO()
+        //    {
+        //        Id = entity.Id,
+        //        Name = entity.Name,
+        //        IsActive = entity.IsActive,
+        //        ActivatePin = entity.ActivatePin,
+        //        DisabledPin = entity.DisabledPin,
+        //        Pressure = entity.Pressure,
+        //        RaspberryId = entity.RaspberryId,
+        //        //Raspberry = raspberry
+        //    };
 
-            return result;
-
-        }
-        public GroupResponseModel ConvertToGroupResponseModel(GroupDTO dtoItem)
-        {
-            if (dtoItem == null)
-                return null;
-            var result = new GroupResponseModel()
-            {
-                Id = dtoItem.Id,
-                Duration = dtoItem.Duration,
-                Name = dtoItem.Name,
-                Unit = dtoItem.Unit,
-                Valves = dtoItem.Valves
-            };
-
-            return result;
-        }
-
-        public Valve ConvertToValve(ValveDTO dtoItem)
-        {
-            var result = new Valve()
-            {
-                Id = dtoItem.Id,
-                IsActive = dtoItem.IsActive,
-                Name = dtoItem.Name,
-                Pin = dtoItem.Pin,
-                Pressure = dtoItem.Pressure,
-                RaspberryId = dtoItem.RaspberryId
-            };
-
-            return result;
-        }
-        public ValveDTO ConvertToValveDTO(Valve entity, Raspberry raspberry)
-        {
-            var result = new ValveDTO()
-            {
-                Id = entity.Id,
-                Name = entity.Name,
-                IsActive = entity.IsActive,
-                Pin = entity.Pin,
-                Pressure = entity.Pressure,
-                RaspberryId = entity.RaspberryId,
-                Raspberry = raspberry
-            };
-
-            return result;
-        }
-        public ValveDTO ConvertToValveDTO(InsertValveRequestModel requestModel)
-        {
-            var result = new ValveDTO()
-            {
+        //    return result;
+        //}
+        public Valve ConvertToValve(InsertValveRequestModel requestModel) {
+            Valve result = new Valve {
                 IsActive = true,
                 Name = requestModel.Name,
-                Pin = requestModel.Pin,
+                EnablePin = requestModel.EnablePin,
+                IsOpen = requestModel.IsOpen,
+                DisablePin = requestModel.DisablePin,
                 Pressure = requestModel.Pressure,
                 RaspberryId = requestModel.RaspberryId
             };
 
             return result;
-
         }
-        public ValveDTO ConvertToValveDTO(UpdateValveRequestModel requestModel)
-        {
-            var result = new ValveDTO()
-            {
+
+        public Valve ConvertToValve(UpdateValveRequestModel requestModel) {
+            Valve result = new Valve {
                 Id = requestModel.ValveId,
-                Pin = requestModel.Pin,
+                EnablePin = requestModel.EnablePin,
+                DisablePin = requestModel.DisablePin,
                 IsActive = true,
+                IsOpen = requestModel.IsOpen,
                 Name = requestModel.Name,
                 Pressure = requestModel.Pressure,
-                RaspberryId =requestModel.RaspberryId
+                RaspberryId = requestModel.RaspberryId
             };
 
             return result;
         }
-        public ValveResponseModel ConvertToValveResponseModel(ValveDTO dtoItem)
-        {
-            if (dtoItem == null)
-                return null;
 
-            var result = new ValveResponseModel()
-            {
+        public ValveResponseModel ConvertToValveResponseModel(Valve dtoItem) {
+            if (dtoItem == null) {
+                return null;
+            }
+
+            ValveResponseModel result = new ValveResponseModel {
                 Id = dtoItem.Id,
                 Name = dtoItem.Name,
+                IsOpen = dtoItem.IsOpen,
+                IsActive = dtoItem.IsActive,
                 Pressure = dtoItem.Pressure,
-                Pin = dtoItem.Pin,
+                EnablePin = dtoItem.EnablePin,
+                DisablePin = dtoItem.DisablePin,
                 RaspberryId = dtoItem.RaspberryId
             };
 
             return result;
         }
 
-        public Raspberry ConvertToRaspberry(RaspberryDTO dtoItem)
-        {
-            var result = new Raspberry()
-            {
+        public Raspberry ConvertToRaspberry(Raspberry dtoItem) {
+            Raspberry result = new Raspberry {
                 Id = dtoItem.Id,
                 IsActive = dtoItem.IsActive,
                 Name = dtoItem.Name,
@@ -184,55 +192,53 @@ namespace SprinklingApp.Service.Helper
 
             return result;
         }
-        public RaspberryDTO ConvertToRaspberryDTO(Raspberry entity, IEnumerable<Valve> valves)
-        {
-            if (entity == null)
-                return null;
 
-            var result = new RaspberryDTO()
-            {
-                Id = entity.Id,
-                IsActive = entity.IsActive,
-                Name = entity.Name,
-                IPAddress = entity.IPAddress,
+        //public Raspberry ConvertToRaspberryDTO(Raspberry entity, IEnumerable<Valve> valves)
+        //{
+        //    if (entity == null)
+        //        return null;
+
+        //    var result = new Raspberry()
+        //    {
+        //        Id = entity.Id,
+        //        IsActive = entity.IsActive,
+        //        Name = entity.Name,
+        //        IPAddress = entity.IPAddress,
+        //        Valves = valves
+        //    };
+
+        //    return result;
+        //}
+
+        public Raspberry ConvertToRaspberry(InsertRaspberryRequestModel requestModel, IEnumerable<Valve> valves) {
+            Raspberry result = new Raspberry {
+                IsActive = true,
+                Name = requestModel.Name,
+                IPAddress = requestModel.IPAddress,
                 Valves = valves
             };
 
             return result;
         }
-        public RaspberryDTO ConvertToRaspberryDTO(InsertRaspberryRequestModel requestModel)
-        {
-            var result = new RaspberryDTO()
-            {
-                //Id = // sıraki Id atanacak
-                IsActive = true,
-                Name = requestModel.Name,
-                IPAddress = requestModel.IPAddress,
-                //Valves = requestModel.ValveIdList 
-            };
 
-            return result;
-
-        }
-        public RaspberryDTO ConvertToRaspberryDTO(UpdateRaspberryRequestModel requestModel)
-        {
-            var result = new RaspberryDTO()
-            {
+        public Raspberry ConvertToRaspberry(UpdateRaspberryRequestModel requestModel, IEnumerable<Valve> valves) {
+            Raspberry result = new Raspberry {
                 Id = requestModel.RaspberryId,
                 IsActive = true,
                 Name = requestModel.Name,
                 IPAddress = requestModel.IPAddress,
-                //Valves todo GEt Valve List
+                Valves = valves
             };
 
             return result;
         }
-        public RaspberryResponseModel ConvertToRaspberryResponseModel(RaspberryDTO dtoItem)
-        {
-            if (dtoItem == null)
+
+        public RaspberryResponseModel ConvertToRaspberryResponseModel(Raspberry dtoItem) {
+            if (dtoItem == null) {
                 return null;
-            var result = new RaspberryResponseModel()
-            {
+            }
+
+            RaspberryResponseModel result = new RaspberryResponseModel {
                 Id = dtoItem.Id,
                 Name = dtoItem.Name,
                 IPAddress = dtoItem.IPAddress,
@@ -242,84 +248,109 @@ namespace SprinklingApp.Service.Helper
             return result;
         }
 
-        public Profile ConvertToProfile(ProfileDTO dtoItem)
-        {
-            var result = new Profile()
-            {
+        public Profile ConvertToProfile(Profile dtoItem) {
+            Profile result = new Profile {
                 Id = dtoItem.Id,
                 IsActive = dtoItem.IsActive,
                 Name = dtoItem.Name,
-                DayOfWeek = dtoItem.DayOfWeek,
+                Monday =  dtoItem.Monday,
+                Tuesday =  dtoItem.Tuesday,
+                Wednesday =  dtoItem.Wednesday,
+                Thursday =  dtoItem.Thursday,
+                Friday =  dtoItem.Friday,
+                Saturday =  dtoItem.Saturday,
+                Sunday =  dtoItem.Sunday,
                 StartHour = dtoItem.StartHour,
                 StartMinute = dtoItem.StartMinute
             };
 
             return result;
         }
-        public ProfileDTO ConvertToProfileDTO(Profile entity, IEnumerable<Group> groups)
-        {
-            if (entity == null)
+        ////public ProfileDTO ConvertToProfileDTO(Profile entity, IEnumerable<Group> groups)
+        //public Profile ConvertToProfileDTO(Profile entity, IEnumerable<Group> groups)
+        //{
+        //    if (entity == null)
+        //        return null;
+        //    var result = new Profile()
+        //    {
+        //        Id = entity.Id,
+        //        IsActive = entity.IsActive,
+        //        Name = entity.Name,
+        //        DayOfWeek = entity.DayOfWeek,
+        //        StartHour = entity.StartHour,
+        //        StartMinute = entity.StartMinute,
+        //        Groups = groups
+        //    };
+
+        //    return result;
+        //}
+        public Profile ConvertToProfile(InsertProfileRequestModel requestModel) {
+            Profile result = new Profile {
+                //Id =
+                IsActive = true,
+                Name = requestModel.Name,
+                Monday = requestModel.Monday,
+                Tuesday = requestModel.Tuesday,
+                Wednesday = requestModel.Wednesday,
+                Thursday = requestModel.Thursday,
+                Friday = requestModel.Friday,
+                Saturday = requestModel.Saturday,
+                Sunday = requestModel.Sunday,
+                StartHour = requestModel.StartHour,
+                StartMinute = requestModel.StartMinute
+            };
+
+            return result;
+        }
+
+        public Profile ConvertToProfile(UpdateProfileRequestModel requestModel) {
+            Profile result = new Profile {
+                Id = requestModel.ProfileId,
+                IsActive = true,
+                Name = requestModel.Name,
+                Monday = requestModel.Monday,
+                Tuesday = requestModel.Tuesday,
+                Wednesday = requestModel.Wednesday,
+                Thursday = requestModel.Thursday,
+                Friday = requestModel.Friday,
+                Saturday = requestModel.Saturday,
+                Sunday = requestModel.Sunday,
+                StartHour = requestModel.StartHour,
+                StartMinute = requestModel.StartMinute
+            };
+
+            return result;
+        }
+
+        public ProfileResponseModel ConvertToProfileResponseModel(Profile item, IEnumerable<Group> groups) {
+            if (item == null) {
                 return null;
-            var result = new ProfileDTO()
-            {
-                Id = entity.Id,
-                IsActive = entity.IsActive,
-                Name = entity.Name,
-                DayOfWeek = entity.DayOfWeek,
-                StartHour = entity.StartHour,
-                StartMinute = entity.StartMinute,
+            }
+
+            ProfileResponseModel result = new ProfileResponseModel {
+                Id = item.Id,
+                Name = item.Name,
+                Monday = item.Monday,
+                Tuesday = item.Tuesday,
+                Wednesday = item.Wednesday,
+                Thursday = item.Thursday,
+                Friday = item.Friday,
+                Saturday = item.Saturday,
+                Sunday = item.Sunday,
+                StartHour = item.StartHour,
+                StartMinute = item.StartMinute,
                 Groups = groups
             };
 
             return result;
         }
-        public ProfileDTO ConvertToProfileDTO(InsertProfileRequestModel requestModel)
-        {
-            var result = new ProfileDTO()
-            {
-                //Id = // sıraki Id atanacak
-                IsActive = true,
-                Name = requestModel.Name,
-                DayOfWeek = requestModel.DayOfWeek,
-                StartHour = requestModel.StartHour,
-                StartMinute = requestModel.StartMinute,
-                //Groups = requestModel.GroupIdList
-            };
 
-            return result;
+        #region [ Lazy-Singleton ]
 
-        }
-        public ProfileDTO ConvertToProfileDTO(UpdateProfileRequestModel requestModel)
-        {
-            var result = new ProfileDTO()
-            {
-                Id = requestModel.ProfileId,
-                IsActive = true,
-                Name = requestModel.Name,
-                DayOfWeek = requestModel.DayOfWeek,
-                StartHour = requestModel.StartHour,
-                StartMinute = requestModel.StartMinute,
-                //Groups = requestModel.GroupIdList
-            };
+        private static readonly Lazy<ModelBinder> _instance = new Lazy<ModelBinder>(() => new ModelBinder(), LazyThreadSafetyMode.ExecutionAndPublication);
+        internal static ModelBinder Instance => _instance.Value;
 
-            return result;
-        }
-        public ProfileResponseModel ConvertToProfileResponseModel(ProfileDTO dtoItem)
-        {
-            if (dtoItem == null)
-                return null;
-            var result = new ProfileResponseModel()
-            {
-                Id = dtoItem.Id,
-                Name = dtoItem.Name,
-                DayOfWeek = dtoItem.DayOfWeek,
-                StartHour = dtoItem.StartHour,
-                StartMinute = dtoItem.StartMinute,
-                //Groups = 
-            };
-
-            return result;
-        }
-
+        #endregion
     }
+
 }

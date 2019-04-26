@@ -1,10 +1,10 @@
-﻿namespace SprinklingApp.Model.Enums
-{
-    public enum TimeUnit
-    {
+﻿namespace SprinklingApp.Model.Enums {
+
+    public enum TimeUnit {
         Default,
         Hour,
         Minute,
         Second
     }
+
 }

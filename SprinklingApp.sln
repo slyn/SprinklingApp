@@ -1,17 +1,22 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.28010.2041
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.28407.52
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SprinklingApp.Model", "SprinklingApp.Model\SprinklingApp.Model.csproj", "{5C1DF3DB-341B-4094-9003-F99A997CE59C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SprinklingApp.Model", "SprinklingApp.Model\SprinklingApp.Model.csproj", "{5C1DF3DB-341B-4094-9003-F99A997CE59C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SprinklingApp.DataAccess", "SprinklingApp.DataAccess\SprinklingApp.DataAccess.csproj", "{39B8CF02-029C-4D39-8BBF-F8AC8ADFB890}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SprinklingApp.DataAccess", "SprinklingApp.DataAccess\SprinklingApp.DataAccess.csproj", "{39B8CF02-029C-4D39-8BBF-F8AC8ADFB890}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SprinklingApp.Common", "SprinklingApp.Common\SprinklingApp.Common.csproj", "{39443E97-1722-443E-A9F5-4A585CA13263}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SprinklingApp.Common", "SprinklingApp.Common\SprinklingApp.Common.csproj", "{39443E97-1722-443E-A9F5-4A585CA13263}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SprinklingApp.Service", "SprinklingApp.Service\SprinklingApp.Service.csproj", "{B4AAADF3-6401-479F-9461-79429E3611D8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SprinklingApp.Service", "SprinklingApp.Service\SprinklingApp.Service.csproj", "{B4AAADF3-6401-479F-9461-79429E3611D8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SprinklingApp.Master.API", "SprinklingApp.Master.API\SprinklingApp.Master.API.csproj", "{2388E5D8-A5CE-4F8F-9EBF-A324DE515D48}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SprinklingApp.Master.API", "SprinklingApp.Master.API\SprinklingApp.Master.API.csproj", "{2388E5D8-A5CE-4F8F-9EBF-A324DE515D48}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{54B840D1-AF64-4301-9F72-AD3DC1A1FBCA}"
+	ProjectSection(SolutionItems) = preProject
+		..\..\..\..\Desktop\.editorconfig = ..\..\..\..\Desktop\.editorconfig
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

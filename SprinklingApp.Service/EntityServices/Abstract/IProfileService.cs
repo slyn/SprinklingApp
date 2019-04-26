@@ -1,14 +1,14 @@
-﻿using SprinklingApp.Model.DTOs.Concrete;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using SprinklingApp.Model.Entities.Concrete;
 
-namespace SprinklingApp.Service.EntityServices.Abstract
-{
-    public interface IProfileService
-    {
-        ProfileDTO Get(long id);
-        IEnumerable<ProfileDTO> GetList();
-        ProfileDTO Insert(ProfileDTO dtoItem);
-        ProfileDTO Update(ProfileDTO dtoItem);
+namespace SprinklingApp.Service.EntityServices.Abstract {
+
+    public interface IProfileService {
+        Profile Get(long id);
+        IEnumerable<Profile> GetList();
+        Profile Insert(Profile dtoItem);
+        Profile Update(Profile dtoItem);
         void Delete(long id);
     }
+
 }
