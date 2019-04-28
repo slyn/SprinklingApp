@@ -64,7 +64,6 @@ namespace SprinklingApp.Master.API {
             services.TryAddScoped<IProfileProcedure, ProfileProcedure>();
             services.TryAddScoped<IRaspberryProcedure, RaspberryProcedure>();
             
-
             #endregion
 
             #region [Background Services]
@@ -81,8 +80,13 @@ namespace SprinklingApp.Master.API {
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UseStaticFiles();
+
             app.UseMiddleware<EnsureCreatedDatabaseMiddleware>();
-            app.UseMvc();
+            app.UseMvc(
+                builder => {
+                    builder.MapRoute("default", template: "{controller=Home}/{action=Index}");
+                });
         }
     }
 

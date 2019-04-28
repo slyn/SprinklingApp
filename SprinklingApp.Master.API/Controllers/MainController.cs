@@ -61,6 +61,7 @@ namespace SprinklingApp.Master.API.Controllers {
 
     public class GgSettings : IApiResponse {
         public virtual bool IsStarted { get; set; }
+        public virtual string Password { get; set; } = "1234";
     }
 
 }

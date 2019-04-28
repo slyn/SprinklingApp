@@ -1,1 +1,4 @@
-{"IsStarted":true}
+{
+  "IsStarted": false,
+  "Password": "1234"
+}

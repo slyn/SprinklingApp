@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Sulama Sistemi</title>
+
+    <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <style>
+        #navbar-custom{
+            box-shadow: 0 2px 6px 0 rgba(0,0,0,0.12);
+        }
+
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 34px;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            -webkit-transition: .4s;
+            transition: .4s;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 26px;
+            width: 26px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            -webkit-transition: .4s;
+            transition: .4s;
+        }
+
+        input:checked + .slider {
+            background-color: #2196F3;
+        }
+
+        input:focus + .slider {
+            box-shadow: 0 0 1px #2196F3;
+        }
+
+        input:checked + .slider:before {
+            -webkit-transform: translateX(26px);
+            -ms-transform: translateX(26px);
+            transform: translateX(26px);
+        }
+
+        /* Rounded sliders */
+        .slider.round {
+            border-radius: 34px;
+        }
+
+        .slider.round:before {
+            border-radius: 50%;
+        }
+
+
+        .satir{
+            border:1px solid #eeeeee;
+            padding:10px;
+            box-shadow: 0 1px 2px 0 rgba(0,0,0,0.12);
+        }
+
+        .table-vanalar tr td:last-child{
+            min-width: 40px;
+        }
+        .table-vanalar tr td{
+            padding: 10px;
+        }
+
+        .durum{
+            display: inline-block;
+        }
+
+        .durum-acik{
+            color:#00d084;
+        }
+
+        .durum-kapali{
+            color: #ff0017;
+        }
+
+
+        @media only screen and (max-width: 750px) {
+            .table-vanalar tr td:nth-child(2){
+                display: none;
+            }
+
+            .table-vanalar tr td:last-child{
+                min-width: 50px;
+            }
+
+        }
+
+
+        img{
+            max-width: 100%;
+            max-height: 100%;
+        }
+        .table-vanalar{
+            background-image: url(Resimler/GREEN_GROW.png);
+            background-repeat: no-repeat;
+            background-position: center center;
+            background-size: 200px 200px;
+        }
+
+        table{
+            width:100%;
+            font-weight: bold;
+        }
+
+       .tumunu-kapat{
+
+           margin:10px;
+       }
+    </style>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light" id="navbar-custom"  style="  line-height: 50px;">
+    <a class="navbar-brand" href="#"><img src="Resimler/GGwifiOne_Logo.png" alt=""></a>
+    <button class="tumunu-kapat btn btn-default pull-right">Tümünü Vanaları Kapat</button>
+    <!--<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+                <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">Link</a>
+            </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Dropdown
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item" href="#">Action</a>
+                    <a class="dropdown-item" href="#">Another action</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="#">Something else here</a>
+                </div>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link disabled" href="#">Disabled</a>
+            </li>
+        </ul>
+        <form class="form-inline my-2 my-lg-0">
+            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+        </form>
+
+
+    </div>
+
+        -->
+</nav>
+
+<div class="container mt-4">
+
+    <div class="col-md-12 text-center" style="padding:20px;height: 74px ;">
+        <form action=""><input type="text" name="s" id="arama-input" placeholder="Ara.." style="margin:0 auto" class="form form-control col-xs-3"></form>
+    </div>
+
+    <div class="col-md-12" style="margin-top:10px">
+
+
+        <div class="row satir mb-3">
+            <div class="col-md-12">
+                <table class="vanalar-ayarlar col-md-12">
+
+                </table>
+
+            </div>
+        </div>
+
+
+        <div class="row satir">
+            <div class="col-md-12">
+                <table class="table-vanalar col-md-12">
+
+                </table>
+
+            </div>
+        </div>
+
+
+    </div>
+
+</div>
+
+<a href="#" data-toggle="modal" data-target="#login-modal" id="loginTikla"></a>
+
+<div class="modal fade" id="login-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog">
+        <div class="loginmodal-container">
+            <h1>Giriş Yap</h1><br>
+            <form>
+                <input type="text" name="user" id="username"  value="admin" placeholder="Username">
+                <input type="password" name="pass" id="passwords" placeholder="Password">
+                <input type="button" name="login" class="login loginmodal-submit" id="loginKontrol" value="Giriş Yap">
+            </form>
+
+        </div>
+    </div>
+</div>
+
+
+
+<script src="jquery/jquery-3.3.1.min.js"></script>
+<script src="bootstrap/js/bootstrap.min.js"></script>
+<script src="sweetalert/dist/sweetalert.min.js"></script>
+
+<link rel="stylesheet" href="css/loginform.css">
+<script>
+    $(function () {
+
+        var loginmi = 0;
+        var durum = 0;
+        var adres = "http://192.168.2.107/";
+        var sifre = "";
+        var isStarted = true;
+
+        var arama = "";
+
+
+        $.get(adres+"api/v1/GgSettings",function (data) {
+            sifre =  data.Password;
+            isStarted =  data.IsStarted;
+        });
+
+        $("#loginTikla").click();
+
+
+        $("#arama-input").keyup(function () {
+            arama = $(this).val();
+        });
+
+        $(document).on("click","#loginKontrol",function () {
+
+            if($("#username").val() == "admin" && $("#passwords").val() == sifre ){
+                loginmi = 1;
+
+                $('#login-modal').hide();
+                $("body").css({ overflow: 'auto' })
+
+            }else {
+                swal("Kullanıcı Adı Veya Şifre Yanlış")
+                    .then((value) => {
+                       location.reload();
+                    });
+            }
+        });
+
+        function render (){
+
+
+
+            $.get(adres+"api/v1/GgSettings",function (data) {
+                sifre =  data.Password;
+                isStarted =  data.IsStarted;
+            });
+
+            if(durum != 0)
+                return null;
+
+            if (loginmi == 0){
+                return null;
+            }
+
+
+
+            $.get(adres +"api/v1/Valve",function (data) {
+
+                $(".table-vanalar").html("");
+
+                $.each(data, function(i, item) {
+
+                    if (arama != "")
+                        if(item.Name.indexOf(arama) == -1)
+                            return true;
+
+                    var kapalimi = "checked";
+                    var durumClass = "";
+                    var durmMetni = "Açık";
+
+                    var isChecked = "";
+
+                    if(item.IsOpen == true){
+                        isChecked = "checked";
+                    }
+
+
+                    if (item.IsOpen == true){
+                        durumClass = "";
+                        durmMetni = "Açık";
+                    }else {
+                        durumClass = "durum-kapali";
+                        durmMetni = "Kapalı";
+                    }
+
+                    $(".table-vanalar").append(
+                        "<tr  id='vana-"+item.Id+"'>\n" +
+                        "                        <td>\n" +
+                        item.Id  +
+                        "                        </td>\n" +
+                        "                        <td>\n" +
+                                                 item.Name +
+                        "                        </td>\n" +
+                        "                        <td>\n" +
+                        "                            Durum: <div class=\"durum "+durumClass+"\">"+durmMetni+"</div>\n" +
+                        "                        </td>\n" +
+                        "                        <td>\n" +
+                        "                            <label class=\"switch\">\n" +
+                        "                                <input type=\"checkbox\" class='vana-satir-islem' vana-id='vana-"+item.Id+"' "+isChecked+">\n" +
+                        "                                <span class=\"slider round\"></span>\n" +
+                        "                            </label>\n" +
+                        "                        </td>\n" +
+                        "                    </tr>"
+                    );
+                });
+
+            });
+
+            $.get(adres +"api/v1/GgSettings",function (data) {
+
+                $(".vanalar-ayarlar").html("");
+
+                var kapalimi = "";
+                var durumClass = "";
+                var durmMetni = "";
+
+                if (data.IsStarted == true){
+                    kapalimi = "checked";
+                    durumClass = "";
+                    durmMetni = "Açık";
+                }else {
+                    kapalimi = "";
+                    durumClass = "durum-kapali";
+                    durmMetni = "Kapalı"
+                }
+
+                $(".vanalar-ayarlar").append("<tr id=\"otomatik-ayar-satir\">\n" +
+                    "                        <td></td>\n" +
+                    "                        <td></td>\n" +
+                    "                        <td>\n" +
+                    "                            Otomatik Sistem Durum: <div class=\"durum "+durumClass+"\">"+durmMetni+"</div>\n" +
+                    "                        </td>\n" +
+                    "                        <td class=\"text-center\">\n" +
+                    "                            <label class=\"switch\">\n" +
+                    "                                <input type=\"checkbox\" class=\"vana-satir-islem-otomatik\" vana-id=\"vana-11\" "+kapalimi+">\n" +
+                    "                                <span class=\"slider round\"></span>\n" +
+                    "                            </label>\n" +
+                    "                        </td>\n" +
+                    "                    </tr>");
+
+            });
+
+            return null;
+        }
+
+
+        setInterval(render,1000);
+
+        $(".tumunu-kapat").click(function () {
+            if (isStarted == true){
+                swal("Otomatik Moddayken İşlem Yapılamaz");
+            }else {
+                $.get(adres + "api/v1/Valve", function (data) {
+                    $.each(data, function (key, value) {
+                        $.get(adres + "api/v1/Pin/Close/" + value.Id, function () {
+
+                        });
+                    });
+                }).then(function () {
+                    location.reload();
+                });
+
+
+            }
+        });
+
+        $(document).on("click",".vana-satir-islem-otomatik",function () {
+
+            if ($(this).attr("checked") == "checked"){
+
+                swal("Vanalar Otomatik Moddan Çıkacak Onaylıyor Musun?", {
+                    buttons: {
+                        cancel: "Hayır",
+                        catch: {
+                            text: "Onaylıyorum",
+                            value: "catch",
+                        }
+                    },
+                }).then((value) => {
+                    switch (value) {
+                        case "cancel":
+                            swal("İptal Edildi");
+                            break;
+
+                        case "catch":
+                            swal("Dikkat!", "Otomatik Modddan Çıkıldı", "success");
+                            $.get(adres+"api/v1/GgSettings/SetManual");
+                            break;
+                    }
+                });
+
+
+            } else {
+
+                swal("Vanalar Otomatik Moda Geçecek Onaylıyor Musun?", {
+                    buttons: {
+                        cancel: "Hayır",
+                        catch: {
+                            text: "Onaylıyorum",
+                            value: "catch",
+                        }
+                    },
+                }).then((value) => {
+                        switch (value) {
+
+                            case "cancel":
+                                swal("İptal Edildi");
+                                break;
+
+                            case "catch":
+                                swal("Dikkat!", "Otomatik Moda Geçildi", "success");
+                                $.get(adres+"api/v1/GgSettings/SetAutomatic");
+                                break;
+                        }
+                    });
+            }
+        });
+
+
+        $(document).on("click",".vana-satir-islem",function () {
+
+            durum = 1;
+
+            if (isStarted == true){
+
+                swal("Vanalar otomatik modda işlem yapılamaz");
+
+
+            } else{
+
+
+
+                var vanaID = $(this).attr("vana-id");
+                vanaID = vanaID.split("-")[1];
+
+                if ($(this).attr("checked") == "checked"){
+                    $.get(adres+"api/v1/Pin/Close/"+vanaID);
+                }else {
+                    $.get(adres+"api/v1/Pin/Open/"+vanaID);
+                }
+
+
+            }
+
+            durum=0;
+        });
+
+    });
+</script>
+<br>
+<center>© 2019 Green Grow Tarım San. Tic. Ltd. Şti. All Rights Reserved!<br>
+   Telefon : +90 246 311 4541<br>
+    <a target="_blank" href="https://greengrow.com.tr">greengrow.com.tr</a><br>
+
+</center>
+</body>
+</html>

@@ -1,0 +1,20 @@
+[
+  {
+    "DisablePin": 2,
+    "EnablePin": 1,
+    "Id": 11,
+    "Name": "v1",
+    "Pressure": 3.0,
+    "RaspberryId": 1,
+    "isActive": 0
+  },
+  {
+    "DisablePin": 4,
+    "EnablePin": 3,
+    "Id": 12,
+    "Name": "v2",
+    "Pressure": 5.0,
+    "RaspberryId": 1,
+    "isActive": 1
+  }
+]

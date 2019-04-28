@@ -205,18 +205,21 @@ namespace SprinklingApp.Master.API.Controllers {
             return todaysProfiles;
         }
 
-        public static void EasyRequest(string url) {
-            HttpWebRequest request = (HttpWebRequest) WebRequest.Create(url);
-            request.Method = "GET";
-            WebResponse webResponse = request.GetResponse();
-            Stream webStream = webResponse.GetResponseStream();
-            if (webStream == null) {
-                return;
-            }
+        private static async void EasyRequest(string url) {
+            await Task.Factory.StartNew(
+                async () => {
+                    HttpWebRequest request = (HttpWebRequest) WebRequest.Create(url);
+                    request.Method = "GET";
+                    WebResponse webResponse = await request.GetResponseAsync();
+                    Stream webStream = webResponse.GetResponseStream();
+                    if (webStream == null) {
+                        return;
+                    }
 
-            StreamReader responseReader = new StreamReader(webStream);
-            responseReader.ReadToEnd();
-            responseReader.Close();
+                    StreamReader responseReader = new StreamReader(webStream);
+                    responseReader.ReadToEnd();
+                    responseReader.Close();
+                });
         }
     }
 
