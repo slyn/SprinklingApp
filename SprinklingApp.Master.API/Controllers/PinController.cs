@@ -48,6 +48,29 @@ namespace SprinklingApp.Master.API.Controllers {
             }
 
             valveDto.IsOpen = false;
+            valveDto.CloseDateTime = null;
+            _valveService.Update(valveDto);
+
+            string url = $"http://{ip}/{valveDto.DisablePin}";
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine($"\n\n\n\n{raspberry.IPAddress} valve:{valveDto.RaspberryId} closing\n{url}\n\n\n");
+            Console.ForegroundColor = ConsoleColor.White;
+            Get(url);
+            return Ok(200);
+        }
+
+        [HttpGet("Open/{valveId}/{workingTime}")]
+        public ActionResult OpenWithTime(long valveId, int workingTime) {
+            Valve valveDto = _valveService.Get(valveId);
+            Raspberry raspberry = raspberryService.Get(valveDto.RaspberryId);
+            string ip = raspberry.IPAddress;
+            if (string.IsNullOrWhiteSpace(ip))
+            {
+                throw new Exception("IP address of Valve  can not found!");
+            }
+
+            valveDto.IsOpen = false;
+            valveDto.CloseDateTime = DateTime.Now.AddMinutes(workingTime);
             _valveService.Update(valveDto);
 
             string url = $"http://{ip}/{valveDto.DisablePin}";

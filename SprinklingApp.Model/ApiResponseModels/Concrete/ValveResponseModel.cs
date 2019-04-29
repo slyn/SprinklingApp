@@ -1,4 +1,5 @@
-﻿using SprinklingApp.Model.ApiResponseModels.Abstract;
+﻿using System;
+using SprinklingApp.Model.ApiResponseModels.Abstract;
 
 namespace SprinklingApp.Model.ApiResponseModels.Concrete {
 
@@ -12,6 +13,7 @@ namespace SprinklingApp.Model.ApiResponseModels.Concrete {
         public virtual bool IsOpen { get; set; }
         public virtual bool IsActive { get; set; }
         public virtual long RaspberryId { get; set; }
+        public virtual DateTime? CloseDateTime { get; set; }
     }
 
 }

@@ -1,4 +1,6 @@
-﻿namespace SprinklingApp.Model.ApiRequestModels.Abstract {
+﻿using System;
+
+namespace SprinklingApp.Model.ApiRequestModels.Abstract {
 
     public class BaseValveRequest : IApiRequest {
         public virtual int EnablePin { get; set; }
@@ -7,6 +9,7 @@
         public virtual bool IsOpen { get; set; }
         public virtual string Name { get; set; }
         public virtual long RaspberryId { get; set; }
+        public virtual DateTime? CloseDateTime { set; get; }
     }
 
 }

@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using System;
+using System.ComponentModel.DataAnnotations.Schema;
 using SprinklingApp.Model.Entities.Abstract;
 
 namespace SprinklingApp.Model.Entities.Concrete {
@@ -9,6 +10,7 @@ namespace SprinklingApp.Model.Entities.Concrete {
         public virtual float Pressure { get; set; }
         public virtual string Name { get; set; }
         public virtual bool IsOpen { get;set; }
+        public virtual DateTime? CloseDateTime { get; set; }
 
         [ForeignKey("Raspberry")]
         public virtual long RaspberryId { get; set; }

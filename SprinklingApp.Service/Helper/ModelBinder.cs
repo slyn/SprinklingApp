@@ -141,7 +141,8 @@ namespace SprinklingApp.Service.Helper {
                 IsOpen = requestModel.IsOpen,
                 DisablePin = requestModel.DisablePin,
                 Pressure = requestModel.Pressure,
-                RaspberryId = requestModel.RaspberryId
+                RaspberryId = requestModel.RaspberryId,
+                CloseDateTime = requestModel.CloseDateTime
             };
 
             return result;
@@ -156,7 +157,8 @@ namespace SprinklingApp.Service.Helper {
                 IsOpen = requestModel.IsOpen,
                 Name = requestModel.Name,
                 Pressure = requestModel.Pressure,
-                RaspberryId = requestModel.RaspberryId
+                RaspberryId = requestModel.RaspberryId,
+                CloseDateTime = requestModel.CloseDateTime
             };
 
             return result;
@@ -175,7 +177,8 @@ namespace SprinklingApp.Service.Helper {
                 Pressure = dtoItem.Pressure,
                 EnablePin = dtoItem.EnablePin,
                 DisablePin = dtoItem.DisablePin,
-                RaspberryId = dtoItem.RaspberryId
+                RaspberryId = dtoItem.RaspberryId,
+                CloseDateTime = dtoItem.CloseDateTime
             };
 
             return result;
