@@ -59,7 +59,7 @@ namespace SprinklingApp.Master.API.Controllers {
             return Ok(200);
         }
 
-        [HttpGet("Open/{valveId}/{workingTime}")]
+        [HttpGet("OpenWithTime/{valveId}/{workingTime}")]
         public ActionResult OpenWithTime(long valveId, int workingTime) {
             Valve valveDto = _valveService.Get(valveId);
             Raspberry raspberry = raspberryService.Get(valveDto.RaspberryId);
