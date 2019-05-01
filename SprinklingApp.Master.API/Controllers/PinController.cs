@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Globalization;
 using System.IO;
 using System.Net;
 using Microsoft.AspNetCore.Mvc;
+using SprinklingApp.DataAccess.ORM.EFCore;
 using SprinklingApp.Model.Consts;
 using SprinklingApp.Model.Entities.Concrete;
 using SprinklingApp.Service.EntityServices.Abstract;
@@ -12,10 +14,12 @@ namespace SprinklingApp.Master.API.Controllers {
     public class PinController : BaseMasterController {
         private readonly IValveService _valveService;
         private readonly IRaspberryService raspberryService;
+        private readonly SpringklingContext _dbContext;
 
-        public PinController(IValveService valveService, IRaspberryService raspberryService) {
+        public PinController(IValveService valveService, IRaspberryService raspberryService, SpringklingContext dbContext) {
             _valveService = valveService;
             this.raspberryService = raspberryService;
+            _dbContext = dbContext;
         }
 
         [HttpGet("Open/{valveId}")]
@@ -32,9 +36,29 @@ namespace SprinklingApp.Master.API.Controllers {
             Console.WriteLine($"\n\n\n\n{raspberry.IPAddress} valve:{valveDto.RaspberryId} opening\n{url}\n\n\n");
             Console.ForegroundColor = ConsoleColor.White;
             valveDto.IsOpen = true;
+            
+            
+            ValveLog log = new ValveLog();
+            log.Operation = "Open";
+            log.OperationTime = DateTime.Now;
+            log.Tonnage = valveDto.Pressure;
+            log.ValveName = valveDto.Name;
+            log.ValveId = (int) valveDto.Id;
+            log.IsActive = true;
+            log.RaspberryId = raspberry.Id;
+            log.RaspberryName = raspberry.Name;
+            try
+            {
+                Get(url);
+                log.Status = "Success";
+            }
+            catch
+            {
+                log.Status = "Fail";
+            }
+            _dbContext.ValveLog.Add(log);
             _valveService.Update(valveDto);
-
-            Get(url);
+            _dbContext.SaveChanges();
             return Ok(200);
         }
 
@@ -55,7 +79,28 @@ namespace SprinklingApp.Master.API.Controllers {
             Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine($"\n\n\n\n{raspberry.IPAddress} valve:{valveDto.RaspberryId} closing\n{url}\n\n\n");
             Console.ForegroundColor = ConsoleColor.White;
-            Get(url);
+
+            ValveLog log = new ValveLog();
+            log.Operation = "Close";
+            log.OperationTime = DateTime.Now;
+            log.Tonnage = valveDto.Pressure;
+            log.ValveName = valveDto.Name;
+            log.ValveId = (int)valveDto.Id;
+            log.IsActive = true;
+            log.RaspberryId = raspberry.Id;
+            log.RaspberryName = raspberry.Name;
+            try
+            {
+                Get(url);
+                log.Status = "Success";
+            }
+            catch {
+                log.Status = "Fail";
+            }
+
+
+            _dbContext.ValveLog.Add(log);
+            int changes = _dbContext.SaveChanges();
             return Ok(200);
         }
 
@@ -71,13 +116,36 @@ namespace SprinklingApp.Master.API.Controllers {
 
             valveDto.IsOpen = false;
             valveDto.CloseDateTime = DateTime.Now.AddMinutes(workingTime);
-            _valveService.Update(valveDto);
+            
 
             string url = $"http://{ip}/{valveDto.DisablePin}";
             Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine($"\n\n\n\n{raspberry.IPAddress} valve:{valveDto.RaspberryId} closing\n{url}\n\n\n");
             Console.ForegroundColor = ConsoleColor.White;
-            Get(url);
+
+
+            ValveLog log = new ValveLog();
+            log.Operation = "Open with time";
+            log.OperationTime = DateTime.Now;
+            log.Tonnage = valveDto.Pressure;
+            log.ValveName = valveDto.Name;
+            log.ValveId = (int)valveDto.Id;
+            log.IsActive = true;
+            log.RaspberryId = raspberry.Id;
+            log.RaspberryName = raspberry.Name;
+            try
+            {
+                Get(url);
+                log.Status = "Success";
+            }
+            catch
+            {
+                log.Status = "Fail";
+            }
+
+            _dbContext.ValveLog.Add(log);
+            _valveService.Update(valveDto);
+            _dbContext.SaveChanges();
             return Ok(200);
         }
 

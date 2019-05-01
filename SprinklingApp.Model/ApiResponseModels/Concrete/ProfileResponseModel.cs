@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using SprinklingApp.Model.ApiResponseModels.Abstract;
 using SprinklingApp.Model.Entities.Concrete;
-using SprinklingApp.Model.Enums;
 
 namespace SprinklingApp.Model.ApiResponseModels.Concrete {
 
@@ -11,8 +11,6 @@ namespace SprinklingApp.Model.ApiResponseModels.Concrete {
         public virtual string Name { get; set; }
         public virtual int StartHour { get; set; }
         public virtual int StartMinute { get; set; }
-
-
         public bool Monday { get; set; }
         public bool Tuesday { get; set; }
         public bool Wednesday { get; set; }
@@ -20,6 +18,8 @@ namespace SprinklingApp.Model.ApiResponseModels.Concrete {
         public bool Friday { get; set; }
         public bool Saturday { get; set; }
         public bool Sunday { get; set; }
+        public virtual bool IsPassive { get; set; }
+        public virtual DateTime? StartingDate { get; set; }
 
         public virtual IEnumerable<Group> Groups { get; set; }
     }

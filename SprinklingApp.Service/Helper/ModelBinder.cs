@@ -262,6 +262,8 @@ namespace SprinklingApp.Service.Helper {
                 Thursday =  dtoItem.Thursday,
                 Friday =  dtoItem.Friday,
                 Saturday =  dtoItem.Saturday,
+                IsPassive = dtoItem.IsPassive,
+                StartingDate = dtoItem.StartingDate,
                 Sunday =  dtoItem.Sunday,
                 StartHour = dtoItem.StartHour,
                 StartMinute = dtoItem.StartMinute
@@ -300,6 +302,8 @@ namespace SprinklingApp.Service.Helper {
                 Saturday = requestModel.Saturday,
                 Sunday = requestModel.Sunday,
                 StartHour = requestModel.StartHour,
+                IsPassive = requestModel.IsPassive,
+                StartingDate = requestModel.StartingDate,
                 StartMinute = requestModel.StartMinute
             };
 
@@ -319,6 +323,8 @@ namespace SprinklingApp.Service.Helper {
                 Saturday = requestModel.Saturday,
                 Sunday = requestModel.Sunday,
                 StartHour = requestModel.StartHour,
+                IsPassive = requestModel.IsPassive,
+                StartingDate = requestModel.StartingDate,
                 StartMinute = requestModel.StartMinute
             };
 
@@ -342,6 +348,8 @@ namespace SprinklingApp.Service.Helper {
                 Sunday = item.Sunday,
                 StartHour = item.StartHour,
                 StartMinute = item.StartMinute,
+                IsPassive =  item.IsPassive,
+                StartingDate = item.StartingDate,
                 Groups = groups
             };
 

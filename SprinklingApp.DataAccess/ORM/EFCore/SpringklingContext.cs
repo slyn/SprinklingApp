@@ -10,11 +10,13 @@ namespace SprinklingApp.DataAccess.ORM.EFCore {
         public DbSet<Raspberry> Raspberry { get; set; }
         public DbSet<Profile> Profile { get; set; }
         public DbSet<Group> Group { get; set; }
+        public DbSet<ValveLog> ValveLog { get; set; }
         public DbSet<ProfileGroupMapping> ProfileGroupMapping { get; set; }
         public DbSet<ValveGroupMapping> ValveGroupMapping { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder) {
             // seed data
+
         }
     }
 

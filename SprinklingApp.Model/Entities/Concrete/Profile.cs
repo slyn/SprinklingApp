@@ -1,4 +1,5 @@
-﻿using SprinklingApp.Model.Entities.Abstract;
+﻿using System;
+using SprinklingApp.Model.Entities.Abstract;
 using SprinklingApp.Model.Enums;
 
 namespace SprinklingApp.Model.Entities.Concrete {
@@ -7,7 +8,6 @@ namespace SprinklingApp.Model.Entities.Concrete {
         public virtual int StartHour { get; set; }
         public virtual int StartMinute { get; set; }
         public virtual string Name { get; set; }
-
         public bool Monday { get; set; }
         public bool Tuesday { get; set; }
         public bool Wednesday { get; set; }
@@ -15,6 +15,8 @@ namespace SprinklingApp.Model.Entities.Concrete {
         public bool Friday { get; set; }
         public bool Saturday { get; set; }
         public bool Sunday { get; set; }
+        public bool IsPassive { get; set; }
+        public DateTime? StartingDate { get; set; }
     }
 
 }

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using SprinklingApp.Model.Enums;
 
 namespace SprinklingApp.Model.ApiRequestModels.Abstract {
@@ -15,6 +16,8 @@ namespace SprinklingApp.Model.ApiRequestModels.Abstract {
         public bool Sunday { get; set; }
         public virtual int StartHour { get; set; }
         public virtual int StartMinute { get; set; }
+        public virtual bool IsPassive { get; set; }
+        public virtual DateTime? StartingDate { get; set; }
 
         public virtual IEnumerable<long> GroupIdList { get; set; }
     }
