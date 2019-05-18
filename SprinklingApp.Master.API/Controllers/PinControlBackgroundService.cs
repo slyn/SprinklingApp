@@ -13,8 +13,29 @@ using SprinklingApp.Service.Procedures.Abstract;
 
 namespace SprinklingApp.Master.API.Controllers {
 
+    public class RequestHelper {
+        public static async Task EasyRequest(string url) {
+            await Task.Factory.StartNew(
+                async () => {
+                    HttpWebRequest request = (HttpWebRequest) WebRequest.Create(url);
+                    request.Method = "GET";
+                    WebResponse webResponse = await request.GetResponseAsync();
+                    Stream webStream = webResponse.GetResponseStream();
+                    if (webStream == null) {
+                        return;
+                    }
+
+                    StreamReader responseReader = new StreamReader(webStream);
+                    responseReader.ReadToEnd();
+                    responseReader.Close();
+                });
+        }
+    }
+
     public class PinControlBackgroundService : BackgroundService {
         private readonly IServiceScopeFactory scopeFactory;
+
+        private static bool? isStarted;
 
         public PinControlBackgroundService(IServiceScopeFactory scopeFactory) {
             this.scopeFactory = scopeFactory;
@@ -31,7 +52,7 @@ namespace SprinklingApp.Master.API.Controllers {
 
                 valveService.GetList().ToList().ForEach(
                     async valve => {
-                        await EasyRequest($"http://localhost:5000/api/v1/Pin/Close/{valve.Id}");
+                        await RequestHelper.EasyRequest($"http://localhost:5000/api/v1/Pin/Close/{valve.Id}");
                     });
                 Console.Clear();
 
@@ -40,6 +61,17 @@ namespace SprinklingApp.Master.API.Controllers {
                     //if not, turn off all open valves
 
                     GgSettings settings = settingsController.Get().Value;
+
+                    if (isStarted == null) {
+                        isStarted = settings.IsStarted;
+                    }
+                    else if (isStarted != settings.IsStarted) {
+                        isStarted = settings.IsStarted;
+                        valveService.GetList().ToList().ForEach(
+                            async valve => {
+                                await RequestHelper.EasyRequest($"http://localhost:5000/api/v1/Pin/Close/{valve.Id}");
+                            });
+                    }
 
                     if (settings.IsStarted) {
                         List<ProfileResponseModel> profiles = profileService.GetList().ToList();
@@ -76,26 +108,36 @@ namespace SprinklingApp.Master.API.Controllers {
                             }
                         }
 
-                        valvesToBeOpen.ForEach(async valve => await EasyRequest($"http://localhost:5000/api/v1/Pin/Open/{valve.Id}"));
+                        valvesToBeOpen.ForEach(async valve => await RequestHelper.EasyRequest($"http://localhost:5000/api/v1/Pin/Open/{valve.Id}"));
                         await Task.Delay(SecondsToMiliseconds(5), stoppingToken);
                         List<ValveResponseModel> valves = valveService.GetList().ToList();
                         foreach (ValveResponseModel valve in valves) {
                             if (!valvesToBeOpen.Exists(o => o.Id == valve.Id)) {
-                                await EasyRequest($"http://localhost:5000/api/v1/Pin/Close/{valve.Id}");
+                                await RequestHelper.EasyRequest($"http://localhost:5000/api/v1/Pin/Close/{valve.Id}");
                             }
                         }
-                    } else {
+                    } 
+                    else {
                         List<ValveResponseModel> list = valveService.GetList().ToList();
                         List<ValveResponseModel> timedValves = list.Where(o => o.CloseDateTime != null).ToList();
                         IEnumerable<ValveResponseModel> shouldBeOpenValves = timedValves.Where(o => o.CloseDateTime > DateTime.Now);
                         IEnumerable<ValveResponseModel> shouldNotBeOpenValves = timedValves.Where(o => o.CloseDateTime < DateTime.Now);
 
+                        //foreach (ValveResponseModel valve in list) {
+                        //    if (valve.IsActive) {
+                        //        await EasyRequest($"http://localhost:5000/api/v1/Pin/Open/{valve.Id}");
+                        //    } else {
+                        //        await EasyRequest($"http://localhost:5000/api/v1/Pin/Close/{valve.Id}");
+                        //    }
+                        //}
+
+
                         foreach (ValveResponseModel valve in shouldBeOpenValves) {
-                            await EasyRequest($"http://localhost:5000/api/v1/Pin/Open/{valve.Id}");
+                            await RequestHelper.EasyRequest($"http://localhost:5000/api/v1/Pin/Open/{valve.Id}");
                         }
 
                         foreach (ValveResponseModel valve in shouldNotBeOpenValves) {
-                            await EasyRequest($"http://localhost:5000/api/v1/Pin/Close/{valve.Id}");
+                            await RequestHelper.EasyRequest($"http://localhost:5000/api/v1/Pin/Close/{valve.Id}");
                         }
                     }
 
@@ -222,23 +264,6 @@ namespace SprinklingApp.Master.API.Controllers {
             //}
 
             return todaysProfiles;
-        }
-
-        private static async Task EasyRequest(string url) {
-            await Task.Factory.StartNew(
-                async () => {
-                    HttpWebRequest request = (HttpWebRequest) WebRequest.Create(url);
-                    request.Method = "GET";
-                    WebResponse webResponse = await request.GetResponseAsync();
-                    Stream webStream = webResponse.GetResponseStream();
-                    if (webStream == null) {
-                        return;
-                    }
-
-                    StreamReader responseReader = new StreamReader(webStream);
-                    responseReader.ReadToEnd();
-                    responseReader.Close();
-                });
         }
     }
 
