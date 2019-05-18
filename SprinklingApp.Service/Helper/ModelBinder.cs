@@ -312,7 +312,7 @@ namespace SprinklingApp.Service.Helper {
 
         public Profile ConvertToProfile(UpdateProfileRequestModel requestModel) {
             Profile result = new Profile {
-                Id = requestModel.ProfileId,
+                Id = requestModel.Id,
                 IsActive = true,
                 Name = requestModel.Name,
                 Monday = requestModel.Monday,

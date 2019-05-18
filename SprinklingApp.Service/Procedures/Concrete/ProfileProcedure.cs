@@ -65,8 +65,20 @@ namespace SprinklingApp.Service.Procedures.Concrete {
         }
 
         public ProfileResponseModel Update(UpdateProfileRequestModel requestModel) {
+            /*
+             Valve valveItem = ModelBinder.Instance.ConvertToValve(requestModel);
+             valveItem = _valveService.Update(valveItem);
+             ValveResponseModel resultModel = ModelBinder.Instance.ConvertToValveResponseModel(valveItem);
+             return resultModel;
+            */
+            
+            
             Profile profileItem = ModelBinder.Instance.ConvertToProfile(requestModel);
             profileItem = _profileService.Update(profileItem);
+            //Profile profile = _profileService.Get(requestModel.Id);
+            //profile.IsPassive = requestModel.IsPassive;
+            //var groups = _groupService.GetListByIds(requestModel.GroupIdList.ToList());
+            //var resultModel = ModelBinder.Instance.ConvertToProfileResponseModel(profile, groups);
 
             IEnumerable<ProfileGroupMapping> existedMappings = _profileGroupMappingService.GetListByGroup(profileItem.Id);
             // delete mapping

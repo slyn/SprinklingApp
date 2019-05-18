@@ -3,7 +3,7 @@
 namespace SprinklingApp.Model.ApiRequestModels.Concrete {
 
     public class UpdateProfileRequestModel : BaseProfileRequest {
-        public virtual long ProfileId { get; set; }
+        public virtual long Id { get; set; }
     }
 
 }
