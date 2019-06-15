@@ -27,7 +27,7 @@ namespace SprinklingApp.Service.Helper {
 
         public Group ConvertToGroup(UpdateGroupRequestModel requestModel) {
             Group result = new Group {
-                Id = requestModel.GroupId,
+                Id = requestModel.Id,
                 IsActive = true,
                 Duration = requestModel.Duration,
                 Name = requestModel.Name,
@@ -226,7 +226,7 @@ namespace SprinklingApp.Service.Helper {
 
         public Raspberry ConvertToRaspberry(UpdateRaspberryRequestModel requestModel, IEnumerable<Valve> valves) {
             Raspberry result = new Raspberry {
-                Id = requestModel.RaspberryId,
+                Id = requestModel.Id,
                 IsActive = true,
                 Name = requestModel.Name,
                 IPAddress = requestModel.IPAddress,

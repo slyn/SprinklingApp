@@ -74,7 +74,7 @@ namespace SprinklingApp.Service.Procedures.Concrete {
             Group group = ModelBinder.Instance.ConvertToGroup(requestModel);
             group = groupService.Update(group);
 
-            IEnumerable<ValveGroupMapping> existedMappings = valveGroupMappingService.GetListByGroup(group.Id);
+            var existedMappings = valveGroupMappingService.GetListByGroup(group.Id).ToList();
             // delete mapping
             foreach (ValveGroupMapping item in existedMappings) {
                 if (!requestModel.ValveIdList.Contains(item.ValveId)) {
@@ -83,8 +83,8 @@ namespace SprinklingApp.Service.Procedures.Concrete {
             }
 
             // insert mapping
-            IEnumerable<Valve> latesValves = valveService.GetListByIds(requestModel.ValveIdList.ToList());
-            IEnumerable<long> mappedValveIds = existedMappings.Select(x => x.ValveId);
+            var latesValves = valveService.GetListByIds(requestModel.ValveIdList.ToList()).ToList();
+            var mappedValveIds = existedMappings.Select(x => x.ValveId).ToList();
             foreach (Valve item in latesValves) {
                 if (!mappedValveIds.Contains(item.Id)) {
                     valveGroupMappingService.Insert(
@@ -95,7 +95,7 @@ namespace SprinklingApp.Service.Procedures.Concrete {
                         });
                 }
             }
-
+            
             GroupResponseModel resultModel = ModelBinder.Instance.ConvertToGroupResponseModel(group, latesValves);
             return resultModel;
         }

@@ -68,7 +68,7 @@ namespace SprinklingApp.Master.API {
 
             #region [Background Services]
 
-            services.AddSingleton<IHostedService, PinControlBackgroundService>();
+            //services.AddSingleton<IHostedService, PinControlBackgroundService>();
 
             #endregion
 

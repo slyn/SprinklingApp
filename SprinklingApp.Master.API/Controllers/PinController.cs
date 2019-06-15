@@ -1,8 +1,8 @@
 ﻿using System;
-using System.Globalization;
 using System.IO;
 using System.Net;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using SprinklingApp.DataAccess.ORM.EFCore;
 using SprinklingApp.Model.Consts;
 using SprinklingApp.Model.Entities.Concrete;
@@ -56,7 +56,8 @@ namespace SprinklingApp.Master.API.Controllers {
             {
                 log.Status = "Fail";
             }
-            _dbContext.ValveLog.Add(log);
+            //_dbContext.ValveLog.Add(log);
+            System.IO.File.AppendAllText("log.txt", JsonConvert.SerializeObject(log));
             _valveService.Update(valveDto);
             _dbContext.SaveChanges();
             return Ok(200);
@@ -98,8 +99,8 @@ namespace SprinklingApp.Master.API.Controllers {
                 log.Status = "Fail";
             }
 
-
-            _dbContext.ValveLog.Add(log);
+            System.IO.File.AppendAllText("log.txt", JsonConvert.SerializeObject(log));
+            //_dbContext.ValveLog.Add(log);
             int changes = _dbContext.SaveChanges();
             return Ok(200);
         }
@@ -114,13 +115,13 @@ namespace SprinklingApp.Master.API.Controllers {
                 throw new Exception("IP address of Valve  can not found!");
             }
 
-            valveDto.IsOpen = false;
+            valveDto.IsOpen = true;
             valveDto.CloseDateTime = DateTime.Now.AddMinutes(workingTime);
             
 
-            string url = $"http://{ip}/{valveDto.DisablePin}";
-            Console.ForegroundColor = ConsoleColor.Red;
-            Console.WriteLine($"\n\n\n\n{raspberry.IPAddress} valve:{valveDto.RaspberryId} closing\n{url}\n\n\n");
+            string url = $"http://{ip}/{valveDto.EnablePin}";
+            Console.ForegroundColor = ConsoleColor.Blue;
+            Console.WriteLine($"\n\n\n\n{raspberry.IPAddress} valve:{valveDto.RaspberryId} opening\n{url}\n\n\n");
             Console.ForegroundColor = ConsoleColor.White;
 
 
@@ -142,8 +143,8 @@ namespace SprinklingApp.Master.API.Controllers {
             {
                 log.Status = "Fail";
             }
-
-            _dbContext.ValveLog.Add(log);
+            System.IO.File.AppendAllText("log.txt", JsonConvert.SerializeObject(log));
+            //_dbContext.ValveLog.Add(log);
             _valveService.Update(valveDto);
             _dbContext.SaveChanges();
             return Ok(200);

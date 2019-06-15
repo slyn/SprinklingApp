@@ -33,9 +33,8 @@ namespace SprinklingApp.Master.API.Controllers {
     }
 
     public class PinControlBackgroundService : BackgroundService {
-        private readonly IServiceScopeFactory scopeFactory;
-
         private static bool? isStarted;
+        private readonly IServiceScopeFactory scopeFactory;
 
         public PinControlBackgroundService(IServiceScopeFactory scopeFactory) {
             this.scopeFactory = scopeFactory;
@@ -49,14 +48,16 @@ namespace SprinklingApp.Master.API.Controllers {
                 IGroupProcedure groupService = scope.ServiceProvider.GetRequiredService<IGroupProcedure>();
                 //PinController pinController = scope.ServiceProvider.GetRequiredService<PinController>();
                 MainController settingsController = scope.ServiceProvider.GetRequiredService<MainController>();
-
-                valveService.GetList().ToList().ForEach(
-                    async valve => {
-                        await RequestHelper.EasyRequest($"http://localhost:5000/api/v1/Pin/Close/{valve.Id}");
-                    });
-                Console.Clear();
-
+                
                 while (!stoppingToken.IsCancellationRequested) {
+                    
+                    //valveService.GetList().ToList().ForEach(
+                    //    async valve => {
+                    //        await RequestHelper.EasyRequest($"http://localhost:5000/api/v1/Pin/Close/{valve.Id}");
+                    //    });
+                    //Console.Clear();
+
+
                     //todo check for is whole system is active
                     //if not, turn off all open valves
 
@@ -65,31 +66,28 @@ namespace SprinklingApp.Master.API.Controllers {
                     if (isStarted == null) {
                         isStarted = settings.IsStarted;
                     }
-                    else if (isStarted != settings.IsStarted) {
-                        isStarted = settings.IsStarted;
-                        valveService.GetList().ToList().ForEach(
-                            async valve => {
-                                await RequestHelper.EasyRequest($"http://localhost:5000/api/v1/Pin/Close/{valve.Id}");
-                            });
-                    }
+                    //else if (isStarted != settings.IsStarted) {
+                    //    isStarted = settings.IsStarted;
+                    //    valveService.GetList().ToList().ForEach(
+                    //        async valve => {
+                    //            await RequestHelper.EasyRequest($"http://localhost:5000/api/v1/Pin/Close/{valve.Id}");
+                    //        });
+                    //}
 
                     if (settings.IsStarted) {
                         List<ProfileResponseModel> profiles = profileService.GetList().ToList();
-
-                        List<ProfileResponseModel> todaysProfiles = GetTodaysProfiles(profiles);
+                        List<ProfileResponseModel> activeProfiles = profiles.Where(profile => !profile.IsPassive).ToList();
+                        List<ProfileResponseModel> todaysProfiles = GetTodaysProfiles(activeProfiles);
                         List<ProfileResponseModel> startTimePassedProfiles = GetStartTimePassedProfiles(todaysProfiles);
                         List<ProfileResponseModel> totalTimeIsNotPassedProfiles = GetTotalTimeIsNotPassedProfiles(startTimePassedProfiles);
                         IOrderedEnumerable<ProfileResponseModel> orderedTodaysProfiles =
-                            totalTimeIsNotPassedProfiles.OrderBy(o => o.StartHour).ThenBy(o => o.StartMinute);
+                            totalTimeIsNotPassedProfiles
+                                .OrderBy(o => o.StartHour)
+                                .ThenBy(o => o.StartMinute);
 
                         List<Valve> valvesToBeOpen = new List<Valve>();
 
                         foreach (ProfileResponseModel profile in orderedTodaysProfiles) {
-                            //DateTime profileEndTime = GetProfileEndTime(profile);
-                            //if (DateTime.Now.CompareTo(profileEndTime) >= 0) {
-                            //    continue;
-                            //}
-
                             List<Group> profileGroups = profile.Groups.ToList();
                             int passedTime = DateTime.Now.Hour * 60 + DateTime.Now.Minute - profile.StartHour * 60 - profile.StartMinute;
 
@@ -108,41 +106,17 @@ namespace SprinklingApp.Master.API.Controllers {
                             }
                         }
 
-                        valvesToBeOpen.ForEach(async valve => await RequestHelper.EasyRequest($"http://localhost:5000/api/v1/Pin/Open/{valve.Id}"));
+                        valvesToBeOpen.ForEach(valve => RequestHelper.EasyRequest($"http://localhost:5000/api/v1/Pin/Open/{valve.Id}"));
                         await Task.Delay(SecondsToMiliseconds(5), stoppingToken);
                         List<ValveResponseModel> valves = valveService.GetList().ToList();
                         foreach (ValveResponseModel valve in valves) {
                             if (!valvesToBeOpen.Exists(o => o.Id == valve.Id)) {
-                                await RequestHelper.EasyRequest($"http://localhost:5000/api/v1/Pin/Close/{valve.Id}");
+                                RequestHelper.EasyRequest($"http://localhost:5000/api/v1/Pin/Close/{valve.Id}");
                             }
-                        }
-                    } 
-                    else {
-                        List<ValveResponseModel> list = valveService.GetList().ToList();
-                        List<ValveResponseModel> timedValves = list.Where(o => o.CloseDateTime != null).ToList();
-                        IEnumerable<ValveResponseModel> shouldBeOpenValves = timedValves.Where(o => o.CloseDateTime > DateTime.Now);
-                        IEnumerable<ValveResponseModel> shouldNotBeOpenValves = timedValves.Where(o => o.CloseDateTime < DateTime.Now);
-
-                        //foreach (ValveResponseModel valve in list) {
-                        //    if (valve.IsActive) {
-                        //        await EasyRequest($"http://localhost:5000/api/v1/Pin/Open/{valve.Id}");
-                        //    } else {
-                        //        await EasyRequest($"http://localhost:5000/api/v1/Pin/Close/{valve.Id}");
-                        //    }
-                        //}
-
-
-                        foreach (ValveResponseModel valve in shouldBeOpenValves) {
-                            await RequestHelper.EasyRequest($"http://localhost:5000/api/v1/Pin/Open/{valve.Id}");
-                        }
-
-                        foreach (ValveResponseModel valve in shouldNotBeOpenValves) {
-                            await RequestHelper.EasyRequest($"http://localhost:5000/api/v1/Pin/Close/{valve.Id}");
                         }
                     }
 
-
-                    await Task.Delay(SecondsToMiliseconds(10), stoppingToken);
+                    await Task.Delay(SecondsToMiliseconds(60), stoppingToken);
                 }
             }
         }
@@ -156,7 +130,7 @@ namespace SprinklingApp.Master.API.Controllers {
 
             foreach (ProfileResponseModel profile in profiles) {
                 int leftMinutes = DateTime.Now.Hour * 60 + DateTime.Now.Minute - profile.StartHour * 60 - profile.StartMinute;
-                if (leftMinutes > 0 && leftMinutes < profile.Groups.Sum(o => o.Duration)) {
+                if (leftMinutes >= 0 && leftMinutes <= profile.Groups.Sum(o => o.Duration)) {
                     totalTimeIsNotPassedProfiles.Add(profile);
                 }
             }
