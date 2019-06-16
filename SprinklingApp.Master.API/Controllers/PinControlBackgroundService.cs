@@ -19,15 +19,19 @@ namespace SprinklingApp.Master.API.Controllers {
                 async () => {
                     HttpWebRequest request = (HttpWebRequest) WebRequest.Create(url);
                     request.Method = "GET";
-                    WebResponse webResponse = await request.GetResponseAsync();
-                    Stream webStream = webResponse.GetResponseStream();
+                    Stream webStream;
+                    using (WebResponse webResponse = await request.GetResponseAsync()) {
+                        webStream = webResponse.GetResponseStream();
+                    }
+
                     if (webStream == null) {
                         return;
                     }
 
-                    StreamReader responseReader = new StreamReader(webStream);
-                    responseReader.ReadToEnd();
-                    responseReader.Close();
+                    using (StreamReader responseReader = new StreamReader(webStream)) {
+                        responseReader.ReadToEnd();
+                        responseReader.Close();
+                    }
                 });
         }
     }
@@ -86,8 +90,8 @@ namespace SprinklingApp.Master.API.Controllers {
                                 .ThenBy(o => o.StartMinute);
 
                         List<Valve> valvesToBeOpen = new List<Valve>();
-
-                        foreach (ProfileResponseModel profile in orderedTodaysProfiles) {
+                        var reverseOrderedProfiles = orderedTodaysProfiles.Reverse();
+                        foreach (ProfileResponseModel profile in reverseOrderedProfiles) {
                             List<Group> profileGroups = profile.Groups.ToList();
                             int passedTime = DateTime.Now.Hour * 60 + DateTime.Now.Minute - profile.StartHour * 60 - profile.StartMinute;
 

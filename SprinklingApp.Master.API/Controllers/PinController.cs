@@ -32,12 +32,11 @@ namespace SprinklingApp.Master.API.Controllers {
             }
             
             string url = $"http://{ip}/{valveDto.EnablePin}";
-            Console.ForegroundColor = ConsoleColor.Blue;
-            Console.WriteLine($"\n\n\n\n{raspberry.IPAddress} valve:{valveDto.RaspberryId} opening\n{url}\n\n\n");
-            Console.ForegroundColor = ConsoleColor.White;
-            valveDto.IsOpen = true;
-            
-            
+            //Console.ForegroundColor = ConsoleColor.Blue;
+            //Console.WriteLine($"\n\n\n\n{raspberry.IPAddress} valve:{valveDto.RaspberryId} opening\n{url}\n\n\n");
+            //Console.ForegroundColor = ConsoleColor.White;
+
+
             ValveLog log = new ValveLog();
             log.Operation = "Open";
             log.OperationTime = DateTime.Now;
@@ -47,17 +46,21 @@ namespace SprinklingApp.Master.API.Controllers {
             log.IsActive = true;
             log.RaspberryId = raspberry.Id;
             log.RaspberryName = raspberry.Name;
-            try
-            {
-                Get(url);
+            try {
                 log.Status = "Success";
+                if (valveDto.IsOpen == false) {
+                    Get(url);
+                    System.IO.File.AppendAllText(GetLogFileName(), $"{JsonConvert.SerializeObject(log)}{Environment.NewLine}");
+                }
+
+                valveDto.IsOpen = true;
             }
-            catch
-            {
+            catch {
                 log.Status = "Fail";
+                System.IO.File.AppendAllText(GetLogFileName(), $"{JsonConvert.SerializeObject(log)}{Environment.NewLine}");
             }
             //_dbContext.ValveLog.Add(log);
-            System.IO.File.AppendAllText("log.txt", JsonConvert.SerializeObject(log));
+            
             _valveService.Update(valveDto);
             _dbContext.SaveChanges();
             return Ok(200);
@@ -72,14 +75,14 @@ namespace SprinklingApp.Master.API.Controllers {
                 throw new Exception("IP address of Valve  can not found!");
             }
 
-            valveDto.IsOpen = false;
+            
             valveDto.CloseDateTime = null;
             _valveService.Update(valveDto);
 
             string url = $"http://{ip}/{valveDto.DisablePin}";
-            Console.ForegroundColor = ConsoleColor.Red;
-            Console.WriteLine($"\n\n\n\n{raspberry.IPAddress} valve:{valveDto.RaspberryId} closing\n{url}\n\n\n");
-            Console.ForegroundColor = ConsoleColor.White;
+            //Console.ForegroundColor = ConsoleColor.Red;
+            //Console.WriteLine($"\n\n\n\n{raspberry.IPAddress} valve:{valveDto.RaspberryId} closing\n{url}\n\n\n");
+            //Console.ForegroundColor = ConsoleColor.White;
 
             ValveLog log = new ValveLog();
             log.Operation = "Close";
@@ -92,17 +95,26 @@ namespace SprinklingApp.Master.API.Controllers {
             log.RaspberryName = raspberry.Name;
             try
             {
-                Get(url);
                 log.Status = "Success";
+                if (valveDto.IsOpen == true) {
+                    Get(url);
+                    System.IO.File.AppendAllText(GetLogFileName(), $"{JsonConvert.SerializeObject(log)}{Environment.NewLine}");
+                }
+                valveDto.IsOpen = false;
             }
             catch {
                 log.Status = "Fail";
+                System.IO.File.AppendAllText(GetLogFileName(), $"{JsonConvert.SerializeObject(log)}{Environment.NewLine}");
             }
 
-            System.IO.File.AppendAllText("log.txt", JsonConvert.SerializeObject(log));
+            
             //_dbContext.ValveLog.Add(log);
             int changes = _dbContext.SaveChanges();
             return Ok(200);
+        }
+
+        private static string GetLogFileName() {
+            return $"log_{DateTime.Now:yyyy_MM_dd}.log";
         }
 
         [HttpGet("OpenWithTime/{valveId}/{workingTime}")]
@@ -115,14 +127,12 @@ namespace SprinklingApp.Master.API.Controllers {
                 throw new Exception("IP address of Valve  can not found!");
             }
 
-            valveDto.IsOpen = true;
             valveDto.CloseDateTime = DateTime.Now.AddMinutes(workingTime);
             
-
             string url = $"http://{ip}/{valveDto.EnablePin}";
-            Console.ForegroundColor = ConsoleColor.Blue;
-            Console.WriteLine($"\n\n\n\n{raspberry.IPAddress} valve:{valveDto.RaspberryId} opening\n{url}\n\n\n");
-            Console.ForegroundColor = ConsoleColor.White;
+            //Console.ForegroundColor = ConsoleColor.Blue;
+            //Console.WriteLine($"\n\n\n\n{raspberry.IPAddress} valve:{valveDto.RaspberryId} opening\n{url}\n\n\n");
+            //Console.ForegroundColor = ConsoleColor.White;
 
 
             ValveLog log = new ValveLog();
@@ -130,20 +140,24 @@ namespace SprinklingApp.Master.API.Controllers {
             log.OperationTime = DateTime.Now;
             log.Tonnage = valveDto.Pressure;
             log.ValveName = valveDto.Name;
-            log.ValveId = (int)valveDto.Id;
+            log.ValveId = (int) valveDto.Id;
             log.IsActive = true;
             log.RaspberryId = raspberry.Id;
             log.RaspberryName = raspberry.Name;
-            try
-            {
-                Get(url);
+            try {
                 log.Status = "Success";
+                if (valveDto.IsOpen == false) {
+                    Get(url);
+                    System.IO.File.AppendAllText(GetLogFileName(), $"{JsonConvert.SerializeObject(log)}{Environment.NewLine}");
+                }
+
+                valveDto.IsOpen = true;
             }
-            catch
-            {
+            catch {
                 log.Status = "Fail";
+                System.IO.File.AppendAllText(GetLogFileName(), $"{JsonConvert.SerializeObject(log)}{Environment.NewLine}");
             }
-            System.IO.File.AppendAllText("log.txt", JsonConvert.SerializeObject(log));
+
             //_dbContext.ValveLog.Add(log);
             _valveService.Update(valveDto);
             _dbContext.SaveChanges();
