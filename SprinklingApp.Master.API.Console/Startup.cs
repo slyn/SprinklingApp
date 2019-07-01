@@ -9,15 +9,15 @@ using Microsoft.Extensions.Hosting;
 using Newtonsoft.Json.Serialization;
 using SprinklingApp.DataAccess;
 using SprinklingApp.DataAccess.ORM.EFCore;
-using SprinklingApp.Master.API.Controllers;
-using SprinklingApp.Master.API.Middlewares;
+using SprinklingApp.Master.API.Console.Controllers;
+using SprinklingApp.Master.API.Console.Middlewares;
 using SprinklingApp.Service.EntityServices.Abstract;
 using SprinklingApp.Service.EntityServices.Concrete;
 using SprinklingApp.Service.Procedures.Abstract;
 using SprinklingApp.Service.Procedures.Concrete;
 using IHostingEnvironment = Microsoft.AspNetCore.Hosting.IHostingEnvironment;
 
-namespace SprinklingApp.Master.API {
+namespace SprinklingApp.Master.API.Console {
 
     public class Startup {
         public Startup(IConfiguration configuration) {
@@ -35,14 +35,14 @@ namespace SprinklingApp.Master.API {
                 options =>
                     options
                         //.UseLazyLoadingProxies()
-                        //.UseSqlite("Data Source=Sprinkling.db"));
-                        .UseSqlite("Data Source=C:/Program Files/GG_WIFI_ONE/server/Sprinkling.db"));
+                        .UseSqlite("Data Source=Sprinkling.db"));
             services.TryAddScoped<IRepository, EFCoreRepository>();
 
             ////string storageDirectory = Configuration.GetSection("StorageDirectory")?.Value;
             //var codeBase = new Uri(Assembly.GetExecutingAssembly().CodeBase).LocalPath;
             //var currentFolder = Path.GetDirectoryName(codeBase);
             //services.TryAddScoped<IRepository>( x => new FileRepository<JsonSerialization>(currentFolder));
+
 
             #region [ EntityService ]
 
@@ -62,7 +62,7 @@ namespace SprinklingApp.Master.API {
             services.TryAddScoped<IValveProcedure, ValveProcedure>();
             services.TryAddScoped<IProfileProcedure, ProfileProcedure>();
             services.TryAddScoped<IRaspberryProcedure, RaspberryProcedure>();
-            
+
             #endregion
 
             #region [Background Services]
@@ -70,7 +70,6 @@ namespace SprinklingApp.Master.API {
             services.AddSingleton<IHostedService, PinControlBackgroundService>();
 
             #endregion
-
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -84,7 +83,7 @@ namespace SprinklingApp.Master.API {
             app.UseMiddleware<EnsureCreatedDatabaseMiddleware>();
             app.UseMvc(
                 builder => {
-                    builder.MapRoute("default", template: "{controller=Home}/{action=Index}");
+                    builder.MapRoute("default", "{controller=Home}/{action=Index}");
                 });
         }
     }

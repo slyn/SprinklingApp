@@ -11,7 +11,7 @@ using SprinklingApp.Model.ApiResponseModels.Concrete;
 using SprinklingApp.Model.Entities.Concrete;
 using SprinklingApp.Service.Procedures.Abstract;
 
-namespace SprinklingApp.Master.API.Controllers {
+namespace SprinklingApp.Master.API.Console.Controllers {
 
     public class RequestHelper {
         public static async Task EasyRequest(string url) {
@@ -110,12 +110,12 @@ namespace SprinklingApp.Master.API.Controllers {
                             }
                         }
 
-                        valvesToBeOpen.ForEach(async valve => await RequestHelper.EasyRequest($"http://localhost/api/v1/Pin/Open/{valve.Id}"));
+                        valvesToBeOpen.ForEach(valve => RequestHelper.EasyRequest($"http://localhost:5000/api/v1/Pin/Open/{valve.Id}"));
                         await Task.Delay(SecondsToMiliseconds(5), stoppingToken);
                         List<ValveResponseModel> valves = valveService.GetList().ToList();
                         foreach (ValveResponseModel valve in valves) {
                             if (!valvesToBeOpen.Exists(o => o.Id == valve.Id)) {
-                                await RequestHelper.EasyRequest($"http://localhost/api/v1/Pin/Close/{valve.Id}");
+                                RequestHelper.EasyRequest($"http://localhost:5000/api/v1/Pin/Close/{valve.Id}");
                             }
                         }
                     }
@@ -134,8 +134,6 @@ namespace SprinklingApp.Master.API.Controllers {
 
             foreach (ProfileResponseModel profile in profiles) {
                 int leftMinutes = DateTime.Now.Hour * 60 + DateTime.Now.Minute - profile.StartHour * 60 - profile.StartMinute;
-                int leftMinutes2 = (DateTime.Now - DateTime.Today).Minutes - (profile.StartHour * 60 + profile.StartMinute); 
-
                 if (leftMinutes >= 0 && leftMinutes <= profile.Groups.Sum(o => o.Duration)) {
                     totalTimeIsNotPassedProfiles.Add(profile);
                 }
@@ -148,12 +146,7 @@ namespace SprinklingApp.Master.API.Controllers {
             List<ProfileResponseModel> startTimePassedProfiles = new List<ProfileResponseModel>();
 
             foreach (ProfileResponseModel profile in profiles) {
-                if (DateTime.Now.Hour > profile.StartHour) {
-                    startTimePassedProfiles.Add(profile);
-                    continue;
-                }
-                if (DateTime.Now.Hour == profile.StartHour && DateTime.Now.Minute >= profile.StartMinute)
-                {
+                if (DateTime.Now.Hour >= profile.StartHour && DateTime.Now.Minute >= profile.StartMinute) {
                     startTimePassedProfiles.Add(profile);
                 }
             }

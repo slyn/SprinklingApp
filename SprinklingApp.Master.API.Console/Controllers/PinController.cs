@@ -8,7 +8,7 @@ using SprinklingApp.Model.Consts;
 using SprinklingApp.Model.Entities.Concrete;
 using SprinklingApp.Service.EntityServices.Abstract;
 
-namespace SprinklingApp.Master.API.Controllers {
+namespace SprinklingApp.Master.API.Console.Controllers {
 
     [Route(Routes.Pin)]
     public class PinController : BaseMasterController {
@@ -75,6 +75,7 @@ namespace SprinklingApp.Master.API.Controllers {
                 throw new Exception("IP address of Valve  can not found!");
             }
 
+            
             valveDto.CloseDateTime = null;
             _valveService.Update(valveDto);
 
@@ -113,8 +114,7 @@ namespace SprinklingApp.Master.API.Controllers {
         }
 
         private static string GetLogFileName() {
-            return $"C:/Program Files/GG_WIFI_ONE/server/log_{DateTime.Now:yyyy_MM_dd}.log";
-            //return $"log_{DateTime.Now:yyyy_MM_dd}.log";
+            return $"log_{DateTime.Now:yyyy_MM_dd}.log";
         }
 
         [HttpGet("OpenWithTime/{valveId}/{workingTime}")]

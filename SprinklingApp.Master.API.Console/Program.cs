@@ -1,25 +1,13 @@
 ﻿using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.ServiceProcess;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Hosting.WindowsServices;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 
-namespace SprinklingApp.Master.API {
-
-    public class Program {
-        //public static void Main(string[] args) {
-        //    CreateWebHostBuilder(args).Build().Run();
-        //}
-
-        //public static IWebHostBuilder CreateWebHostBuilder(string[] args) {
-        //    return WebHost.CreateDefaultBuilder(args)
-        //                  .UseStartup<Startup>();
-        //}
-
+namespace SprinklingApp.Master.API.Console
+{
+    public class Program
+    {
         public static void Main(string[] args)
         {
             bool isService = !(Debugger.IsAttached || args.Contains("--console"));
@@ -59,45 +47,8 @@ namespace SprinklingApp.Master.API {
                               })
                           .UseUrls(
                               //"http://localhost:9080"
-                              "http://*:80")
+                              "http://*:8080")
                           .UseStartup<Startup>();
-        }
-    }
-
-    public static class WebHostServiceExtensions
-    {
-        public static void RunAsCustomService(this IWebHost host)
-        {
-            var webHostService = new CustomWebHostService(host);
-            ServiceBase.Run(webHostService);
-        }
-    }
-
-    internal class CustomWebHostService : WebHostService
-    {
-        private readonly ILogger logger;
-
-        public CustomWebHostService(IWebHost host) : base(host)
-        {
-            logger = host.Services.GetRequiredService<ILogger<CustomWebHostService>>();
-        }
-
-        protected override void OnStarting(string[] args)
-        {
-            logger.LogInformation("OnStarting method called.");
-            base.OnStarting(args);
-        }
-
-        protected override void OnStarted()
-        {
-            logger.LogInformation("OnStarted method called.");
-            base.OnStarted();
-        }
-
-        protected override void OnStopping()
-        {
-            logger.LogInformation("OnStopping method called.");
-            base.OnStopping();
         }
     }
 
